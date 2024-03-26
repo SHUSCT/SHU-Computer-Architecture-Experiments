@@ -6,6 +6,7 @@
 #include <omp.h>
 #include <random>
 #include <vector>
+#include <format>
 
 /**
  * @brief  Matrix multiplication: A * B = C.
