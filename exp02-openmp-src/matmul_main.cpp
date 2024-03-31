@@ -1,12 +1,13 @@
-#include "xRandom.hpp"
 #include "TimeCounter.hpp"
+#include "xRandom.hpp"
 #include <algorithm>
 #include <execution>
+#include <format>
 #include <iostream>
 #include <omp.h>
 #include <random>
+#include <ranges>
 #include <vector>
-#include <format>
 
 /**
  * @brief  Matrix multiplication: A * B = C.

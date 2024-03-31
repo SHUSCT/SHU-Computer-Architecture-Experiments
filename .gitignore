@@ -13,3 +13,5 @@ _deps
 build/*
 bin/*
 
+.vscode/*
+!.vscode/*.example
