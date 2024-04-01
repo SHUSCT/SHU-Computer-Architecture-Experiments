@@ -16,12 +16,6 @@ add_executable(hellomp.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/hellomp_main.c
 
 # matmul
 add_executable(matmul.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/matmul_main.cpp)
-# Try find TBB lib
-# This is essential for matmul if you installed Intel OneAPI on your machine
-find_package(TBB REQUIRED)
-if(TBB_FOUND)
-    target_link_libraries(matmul.out ${TBB_IMPORTED_TARGETS})
-endif()
 
 # computePi
 add_executable(computePi.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/computePi_main.cpp)
