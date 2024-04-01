@@ -54,12 +54,17 @@ int main() {
     TimeCounter timeCounter;
     constexpr int n = std::numeric_limits<int>::max() >> 2;
 
+    auto accRatio = [](auto&& originTime, auto&& targetTime) -> double {
+        return static_cast<double>(originTime) / targetTime;
+    };
+
     // Serial.
     timeCounter.init();
     timeCounter.startCounting();
     int sum = accumulate<int, ExecutionPolicy::seq>(0, n);
     timeCounter.endCounting();
     std::cout << std::format("Serial: {} ms, sum = {}\n", timeCounter.msecond(), sum);
+    auto serialTime = timeCounter.msecond();
 
     // OpenMP.
     timeCounter.init();
@@ -67,6 +72,7 @@ int main() {
     sum = accumulate<int, ExecutionPolicy::par>(0, n);
     timeCounter.endCounting();
     std::cout << std::format("OpenMP: {} ms, sum = {}\n", timeCounter.msecond(), sum);
+    std::cout << std::format("Speedup: {}\n", accRatio(serialTime, timeCounter.msecond()));
 
     // OpenMP atomic.
     timeCounter.init();
@@ -74,6 +80,7 @@ int main() {
     sum = accumulate<int, ExecutionPolicy::atomic>(0, n);
     timeCounter.endCounting();
     std::cout << std::format("OpenMP atomic: {} ms, sum = {}\n", timeCounter.msecond(), sum);
+    std::cout << std::format("Speedup: {}\n", accRatio(serialTime, timeCounter.msecond()));
 
     // OpenMP critical.
     timeCounter.init();
@@ -81,6 +88,7 @@ int main() {
     sum = accumulate<int, ExecutionPolicy::critical>(0, n);
     timeCounter.endCounting();
     std::cout << std::format("OpenMP critical: {} ms, sum = {}\n", timeCounter.msecond(), sum);
+    std::cout << std::format("Speedup: {}\n", accRatio(serialTime, timeCounter.msecond()));
 
     // OpenMP reduce.
     timeCounter.init();
@@ -88,6 +96,7 @@ int main() {
     sum = accumulate<int, ExecutionPolicy::par_reduce>(0, n);
     timeCounter.endCounting();
     std::cout << std::format("OpenMP reduce: {} ms, sum = {}\n", timeCounter.msecond(), sum);
+    std::cout << std::format("Speedup: {}\n", accRatio(serialTime, timeCounter.msecond()));
 
     return 0;
 }
