@@ -19,3 +19,6 @@ add_executable(matmul.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/matmul_main.cpp
 
 # computePi
 add_executable(computePi.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/computePi_main.cpp)
+
+# sharedVars
+add_executable(sharedVars.out ${SOURCES} ${CMAKE_CURRENT_SOURCE_DIR}/sharedVars_main.cpp)

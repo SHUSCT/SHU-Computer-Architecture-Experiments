@@ -24,7 +24,8 @@ double computePi_OMP(int n, int num_threads)
 #pragma omp parallel for reduction(+ : pi)
     for (int i = 0; i < n; ++i) {
         double x = (i + 0.5) * step;
-        pi += 4.0 / (1.0 + x * x);
+        pi += 4.0 /
+         (1.0 + x * x);
     }
     return pi * step;
 }
