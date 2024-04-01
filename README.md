@@ -29,7 +29,7 @@ To build the project, run the following commands:
 bash ./scripts/build.sh Release
 
 # On Windows:
-powershell.exe ./scripts/build.ps1 Release
+./scripts/build.ps1 Release
 ```
 
 You will get target binaries in the "./bin" directory.

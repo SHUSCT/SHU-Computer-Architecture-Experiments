@@ -85,7 +85,7 @@ int main()
     timeCounter.startCounting();
     pi_OMP = computePi_OMP(n, 16);
     timeCounter.endCounting();
-    std::cout << std::format("OMP with STL threads: {} ms, pi = {}\n", timeCounter.msecond(),
+    std::cout << std::format("OMP with 16 threads: {} ms, pi = {}\n", timeCounter.msecond(),
                              pi_OMP);
 
     // OMP STL

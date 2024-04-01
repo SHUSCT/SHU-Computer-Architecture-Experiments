@@ -23,5 +23,7 @@ To make your life easier, we provide a script to set the environment variables f
 **Before runing the script, make sure to check the content and modify the paths to match your system.**
 
 ```bash
-pwsh .\scripts\set-env-vars-windows.ps1
+.\scripts\set-env-vars-windows.ps1
 ```
+
+Reopen the terminal (and IDE if you have it open) to apply the changes.
