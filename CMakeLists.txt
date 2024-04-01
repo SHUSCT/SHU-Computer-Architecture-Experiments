@@ -1,7 +1,7 @@
 # Minimum required CMake version
 cmake_minimum_required(VERSION 3.21)
 
-# Project name
+# Project name 
 project(OpenMP VERSION 0.1)
 
 # Set C++ standard to C++23
@@ -17,14 +17,18 @@ if(MSVC)
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /openmp")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /openmp")
-
     # MSVC compiler-specific options
     add_compile_options(/permissive- /Zc:forScope)
-
 else()
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
 endif()
 
+# SUBDIRECTORIES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+# You can comment out some of the following subdirectories 
+# if you don't want to build all of them
+# --------------------------------------------------------------------------
+# Experiment 02: OpenMP
 add_subdirectory(exp02-openmp-src)
+# SUBDIRECTORIES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
