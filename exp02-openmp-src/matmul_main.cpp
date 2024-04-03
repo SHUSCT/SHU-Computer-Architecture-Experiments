@@ -32,7 +32,7 @@ void ABpC(float* A, float* B, float* C, int n, int m, int k)
 
 int main()
 {
-    constexpr int n = 2000;
+    constexpr int n = 1000;
     constexpr int m = 1000;
     constexpr int k = 500;
     std::vector<float> A(n * m);
