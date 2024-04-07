@@ -1,8 +1,11 @@
 # Minimum required CMake version
 cmake_minimum_required(VERSION 3.21)
 
+# Specify CUDA host compiler
+set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin /usr/bin/g++-11")
+
 # Project name 
-project(OpenMP VERSION 0.1)
+project(OpenMP VERSION 0.1 LANGUAGES CUDA CXX)
 
 # Set C++ standard to C++23
 set(CMAKE_CXX_STANDARD 23)
