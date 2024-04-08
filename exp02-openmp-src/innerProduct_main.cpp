@@ -1,12 +1,12 @@
-#include "TimeCounter.hpp"
 #include "InnerProduct.hpp"
+#include "TimeCounter.hpp"
 #include "xRandom.hpp"
+#include <algorithm>
+#include <climits>
 #include <format>
 #include <iostream>
 #include <omp.h>
 #include <string>
-#include <algorithm>
-#include <climits>
 
 enum class ExecutionPolicy
 {
@@ -36,11 +36,11 @@ int main(int argc, char* argv[])
 {
     int n = std::numeric_limits<int>::max();
     if (argc > 1) {
-       n = std::stoi(argv[1]);
+        n = std::stoi(argv[1]);
     }
 
-    std::vector<float> vecA(n,0);
-    std::vector<float> vecB(n,0);
+    std::vector<float> vecA(n, 0);
+    std::vector<float> vecB(n, 0);
 
     xRandUniform<float> randGen;
     randGen.setParams(-1.0, 1.0);
@@ -48,13 +48,13 @@ int main(int argc, char* argv[])
     std::ranges::generate(vecA, randGen);
     std::ranges::generate(vecB, randGen);
 
-    std::vector<float> groundTruth(n,0);
+    std::vector<float> groundTruth(n, 0);
 
     TimeCounter counter;
 
     {
         counter.init();
-        std::vector<float> vecRes(n,0);
+        std::vector<float> vecRes(n, 0);
         counter.startCounting();
         innerProduct<ExecutionPolicy::seq>(vecA.data(), vecB.data(), vecRes.data(), n);
         counter.endCounting();
@@ -64,7 +64,7 @@ int main(int argc, char* argv[])
 
     {
         counter.init();
-        std::vector<float> vecRes(n,0);
+        std::vector<float> vecRes(n, 0);
         counter.startCounting();
         innerProduct<ExecutionPolicy::par>(vecA.data(), vecB.data(), vecRes.data(), n);
         counter.endCounting();
@@ -78,7 +78,7 @@ int main(int argc, char* argv[])
 
     {
         counter.init();
-        std::vector<float> vecRes(n,0);
+        std::vector<float> vecRes(n, 0);
         counter.startCounting();
         innerProduct<ExecutionPolicy::cuda>(vecA.data(), vecB.data(), vecRes.data(), n);
         counter.endCounting();
