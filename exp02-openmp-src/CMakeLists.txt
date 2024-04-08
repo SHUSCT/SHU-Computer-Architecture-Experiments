@@ -1,7 +1,7 @@
 # Include Dirs
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
-project(Exp02 LANGUAGES CXX CUDA)
+project(Exp02)
 enable_language(CUDA)
 # find_package(CUDA)
 include(CheckLanguage)
