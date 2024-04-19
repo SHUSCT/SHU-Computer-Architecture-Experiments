@@ -14,7 +14,13 @@ Make sure to install the following components:
 
 If you missed any of the components, you can modify the installation by running the Visual Studio Installer.
 
-## 2. Set Environment Variables
+## 2. Install PowerShell 7
+
+Check this website: [Install PowerShell on Windows](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
+
+Make sure you have installed the newest version of PowerShell.
+
+## 3. Set Environment Variables
 
 Setting the environment variables is relatively harder on Windows than on Linux. 
 
@@ -23,7 +29,7 @@ To make your life easier, we provide a script to set the environment variables f
 **Before runing the script, make sure to check the content and modify the paths to match your system.**
 
 ```bash
-.\scripts\set-env-vars-windows.ps1
+pwsh .\scripts\set-env-vars-windows.ps1
 ```
 
 Reopen the terminal (and IDE if you have it open) to apply the changes.
