@@ -1,4 +1,19 @@
+# Minimum required CMake version
+cmake_minimum_required(VERSION 3.21)
+
 project(Exp03)
+
+# Set default build type to Release
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Set C++ standard to C++17
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Include Dirs
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 find_package(MPI REQUIRED)
 if (MPI_FOUND)
@@ -9,9 +24,10 @@ else()
     message(FATAL_ERROR "MPI Not Found")
 endif()
 
-
-# Link to TBB if it is Intel MPI
-if (MPI_CXX_COMPILER_ID STREQUAL "Intel")
+if(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
+    # Set different compile options for Release and Debug modes
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -qopenmp")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -qopenmp")
     find_package(TBB REQUIRED)
     if (TBB_FOUND)
         message(STATUS "TBB Found")
@@ -20,17 +36,11 @@ if (MPI_CXX_COMPILER_ID STREQUAL "Intel")
     else()
         message(FATAL_ERROR "TBB Not Found")
     endif()
-else()
 endif()
 
-# Include Dirs
-include_directories(${PROJECT_SOURCE_DIR}/include)
+# Link to Yutils library
 include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
-
-# Link to Yutils library automatically
-link_libraries(Yutils)
-# Or link to the library manually
-# > link_libraries(/path/to/lib)
+link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
 
 # Get all sources files
 file(
@@ -52,3 +62,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_PATH})
 
 # hellompi
 add_executable(hellompi ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/hellompi_main.cpp)
+
+# matmul
+add_executable(matmul ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/matmul_main.cpp)

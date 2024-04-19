@@ -1,17 +1,39 @@
+# Minimum required CMake version
+cmake_minimum_required(VERSION 3.21)
+
+# Project Name
 project(Exp02)
 
-enable_language(CUDA)
-include(CheckLanguage)
-check_language(CUDA)
+# Set default build type to Release
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+endif()
+
+# Set C++ standard to C++23
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Include Dirs
 include_directories(${PROJECT_SOURCE_DIR}/include)
-include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
 
-# Link to Yutils library automatically
-link_libraries(Yutils)
-# Or link to the library manually
-# > link_libraries(/path/to/lib)
+if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # Set different compile options for Release and Debug modes
+    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /openmp")
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /openmp")
+    # MSVC compiler-specific options
+    add_compile_options(/permissive- /Zc:forScope)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Set different compile options for Release and Debug modes
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin /usr/bin/g++-11")
+else()
+    message(FATAL_ERROR "Unsupported compiler")
+endif()
+
+# Link to Yutils library
+include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
+link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
 
 # Get all sources files
 file(
@@ -43,15 +65,22 @@ add_executable(computePi ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/computePi_main.cp
 # sharedVars
 add_executable(sharedVars ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/sharedVars_main.cpp)
 
-# innerProduct
-add_executable(
-    innerProduct 
-    ${CXX_SRCS} 
-    ${PROJECT_SOURCE_DIR}/src/innerProduct_main.cpp
-    ${PROJECT_SOURCE_DIR}/src/innerProduct.cu
-)
-set_target_properties(
-    innerProduct
-    PROPERTIES
-    CUDA_STANDARD 14
-)
+# Try to enable CUDA
+enable_language(CUDA)
+if(CMAKE_CUDA_COMPILER)
+    message(STATUS "CUDA found")
+    # innerProduct
+    add_executable(
+        innerProduct 
+        ${CXX_SRCS} 
+        ${PROJECT_SOURCE_DIR}/src/innerProduct_main.cpp
+        ${PROJECT_SOURCE_DIR}/src/innerProduct.cu
+    )
+    set_target_properties(
+        innerProduct
+        PROPERTIES
+        CUDA_STANDARD 14
+    )
+else()
+    message(STATUS "CUDA not found. Skip building CUDA examples.")
+endif()
