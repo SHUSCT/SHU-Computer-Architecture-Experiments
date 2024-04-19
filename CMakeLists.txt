@@ -8,6 +8,8 @@ project(SHU-CSAE)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+link_libraries(stdc++)
+
 # Set default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
@@ -19,14 +21,23 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /openmp")
     # MSVC compiler-specific options
     add_compile_options(/permissive- /Zc:forScope)
-# Else if GCC
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin /usr/bin/g++-11")
-else()
-    message(FATAL_ERROR "Unsupported compiler")
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
+    # Set different compile options for Release and Debug modes
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -qopenmp")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -qopenmp")
+    find_package(TBB REQUIRED)
+    if (TBB_FOUND)
+        message(STATUS "TBB Found")
+        include_directories(${TBB_INCLUDE_DIRS})
+        link_libraries(${TBB_LIBRARIES})
+    else()
+        message(FATAL_ERROR "TBB Not Found")
+    endif()
 endif()
 
 # SUBDIRECTORIES >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -48,4 +59,6 @@ endif()
 # --------------------------------------------------------------------------
 # Experiment 02: OpenMP
 add_subdirectory(exp02-openmp)
+# Experiment 03: MPI
+add_subdirectory(exp03-mpi)
 # SUBDIRECTORIES <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<

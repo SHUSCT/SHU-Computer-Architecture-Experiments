@@ -1,6 +1,5 @@
 project(Exp02)
 
-# Specify CUDA host compiler
 enable_language(CUDA)
 include(CheckLanguage)
 check_language(CUDA)
