@@ -10,7 +10,6 @@ mkdir -p $PROJECT_ROOT_DIR/build
 
 cd $PROJECT_ROOT_DIR/build
 
-CC=gcc CXX=g++ \
 cmake .. -DCMAKE_BUILD_TYPE=$build_type
 
 make -j$(nproc)

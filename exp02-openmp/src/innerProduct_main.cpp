@@ -1,12 +1,15 @@
 #include "InnerProduct.hpp"
-#include "TimeCounter.hpp"
-#include "xRandom.hpp"
 #include <algorithm>
 #include <climits>
 #include <format>
 #include <iostream>
 #include <omp.h>
 #include <string>
+#include "Yutils/TimeCounter.hpp"
+#include "Yutils/Random.hpp"
+
+using yutils::TimeCounter;
+using yutils::RandUniform;
 
 enum class ExecutionPolicy
 {
@@ -42,7 +45,7 @@ int main(int argc, char* argv[])
     std::vector<float> vecA(n, 0);
     std::vector<float> vecB(n, 0);
 
-    xRandUniform<float> randGen;
+    RandUniform<float> randGen;
     randGen.setParams(-1.0, 1.0);
 
     std::ranges::generate(vecA, randGen);

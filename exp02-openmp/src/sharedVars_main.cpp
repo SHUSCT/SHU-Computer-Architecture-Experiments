@@ -1,7 +1,11 @@
-#include "TimeCounter.hpp"
 #include <format>
 #include <iostream>
 #include <omp.h>
+#include "Yutils/TimeCounter.hpp"
+#include "Yutils/Random.hpp"
+
+using yutils::TimeCounter;
+using yutils::RandNormal;
 
 template <typename T>
 concept Addable = requires(T a, T b) {

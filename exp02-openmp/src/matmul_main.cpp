@@ -1,5 +1,3 @@
-#include "TimeCounter.hpp"
-#include "xRandom.hpp"
 #include <algorithm>
 #include <execution>
 #include <format>
@@ -8,6 +6,11 @@
 #include <random>
 #include <ranges>
 #include <vector>
+#include "Yutils/TimeCounter.hpp"
+#include "Yutils/Random.hpp"
+
+using yutils::TimeCounter;
+using yutils::RandUniform;
 
 /**
  * @brief  Matrix multiplication: A * B = C.
@@ -39,7 +42,7 @@ int main()
     std::vector<float> B(m * k);
     std::vector<float> C(n * k);
 
-    xRandUniform<float> randGen;
+    RandUniform<float> randGen;
     randGen.setParams(-1.0, 1.0);
     std::ranges::generate(A, randGen);
     std::ranges::generate(B, randGen);

@@ -25,17 +25,34 @@ if ($confirmation -ne 'y' -and $confirmation -ne 'Y') {
 
 # Update the INCLUDE environment variable
 $currentInclude = [System.Environment]::GetEnvironmentVariable('INCLUDE', [System.EnvironmentVariableTarget]::User)
-$updatedInclude = "$currentInclude;$WINKIT10_INCLUDE\ucrt;$WINKIT10_INCLUDE\um;$WINKIT10_INCLUDE\shared;$MSVC\include;"
-[System.Environment]::SetEnvironmentVariable('INCLUDE', $updatedInclude, [System.EnvironmentVariableTarget]::User)
+Write-Host "Current INCLUDE environment variable: `n" `
+    $currentInclude -ForegroundColor Yellow
+$confirmUpdateInclude = Read-Host -Prompt "Do you want to update the INCLUDE environment variable? (y/N)"
+if ($confirmUpdateInclude -eq 'y' -or $confirmUpdateInclude -eq 'Y') {
+    $updatedInclude = "$currentInclude;$WINKIT10_INCLUDE\ucrt;$WINKIT10_INCLUDE\um;$WINKIT10_INCLUDE\shared;$MSVC\include;"
+    [System.Environment]::SetEnvironmentVariable('INCLUDE', $updatedInclude, [System.EnvironmentVariableTarget]::User)
+}
 
 # Update the LIB environment variable
 $currentLib = [System.Environment]::GetEnvironmentVariable('LIB', [System.EnvironmentVariableTarget]::User)
-$updatedLib = "$currentLib;$WINKIT10_LIB\um\x64;$WINKIT10_LIB\ucrt\x64;$MSVC\lib\x64;"
-[System.Environment]::SetEnvironmentVariable('LIB', $updatedLib, [System.EnvironmentVariableTarget]::User)
+Write-Host "Current LIB environment variable: `n" `
+    $currentLib -ForegroundColor Yellow
+$confirmUpdateLib = Read-Host -Prompt "Do you want to update the LIB environment variable? (y/N)"
+if ($confirmUpdateLib -eq 'y' -or $confirmUpdateLib -eq 'Y') {
+    $updatedLib = "$currentLib;$WINKIT10_LIB\um\x64;$WINKIT10_LIB\ucrt\x64;$MSVC\lib\x64;"
+    [System.Environment]::SetEnvironmentVariable('LIB', $updatedLib, [System.EnvironmentVariableTarget]::User)
+}
 
 # Update the PATH environment variable
 $currentPath = [System.Environment]::GetEnvironmentVariable('PATH', [System.EnvironmentVariableTarget]::User)
+Write-Host "Current PATH environment variable: `n" `
+    $currentPath -ForegroundColor Yellow
+$confirmUpdatePath = Read-Host -Prompt "Do you want to update the PATH environment variable? (y/N)"
+if ($confirmUpdatePath -ne 'y' -and $confirmUpdatePath -ne 'Y') {
+    Write-Host "Exiting the script..."
+    exit
+}
 $updatedPath = "$currentPath;$MSVC\bin\Hostx64\x64;$WINKIT10_BIN\x64;$CMAKE_BIN;$NINJA_BIN;"
 [System.Environment]::SetEnvironmentVariable('PATH', $updatedPath, [System.EnvironmentVariableTarget]::User)
 
-Write-Host "Environment variables updated successfully."
+Write-Host "Environment variables updated successfully. Remember to restart the terminal."
