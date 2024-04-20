@@ -5,7 +5,7 @@ rm -rf $Yutils_DIR/build
 mkdir -p $Yutils_DIR/build
 cd $Yutils_DIR/build
 CXX=g++-13 \
-cmake .. -DCMAKE_BUILD_TYPE=$build_type -DBUILD_SHARED_LIBS=ON
-make -j$(nproc)
+cmake .. -DCMAKE_BUILD_TYPE=$build_type -DBUILD_SHARED_LIBS=OFF
+make -j $(nproc)
 cd $Yutils_DIR
 echo "Yutils Build finished successfully."
