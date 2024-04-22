@@ -14,7 +14,7 @@ Download the file named something like "**ubuntu-23.10.1-desktop-amd64.iso**".
 
 💡**Note**:
 - Set the computer name (host name) to be "node1", "node2" and "node3" repectively.
-- Create users with the same user name on each virtual machine.
+- Create users with the same username on each virtual machine.
 
 ## 4. Environment Setup
 
@@ -44,8 +44,9 @@ sudo ufw allow ssh
 Generate ssh keys on every virtual machine:
 
 ```bash
+# Replace <username> with your current username
 # Replace <1/2/3> with the corresponding number of the virtual machine
-ssh-keygen -t rsa -b 4096 -C "node<1/2/3>@ubuntu"
+ssh-keygen -t rsa -b 4096 -C "<username>@node<1/2/3>"
 ```
 
 You should be able to find the generated keys in `~/.ssh/` directory.
@@ -73,9 +74,9 @@ Suppose you get following results:
 Share the public key of every virtual machine to every other virtual machine:
 
 ```bash
-# Replace <1/2/3> with the corresponding number of the virtual machine
-# Replace <IP Address> with the corresponding IP address of the virtual machine
-ssh-copy-id node<1/2/3>@<IP Address>
+# Replace <username> with your current username
+# Replace <IP-Address> with the corresponding IP address of the virtual machine
+ssh-copy-id <username>@<IP-Address>
 ```
 
 The public keys are now written to the `~/.ssh/authorized_keys` file on every virtual machine.
@@ -91,13 +92,16 @@ sudo vim /etc/hosts
 Add following lines to the file:
 
 ```bash
+# [Note]:
+#   If there has been something like: 
+#   > 127.0.1.1 node<1/2/3>
+#   Remove this line.
+
+# Replace `192.168.x.10`, `192.168.x.11` and `192.168.x.12` with your own IP addresses.
 192.168.x.10 node1
 192.168.x.11 node2
 192.168.x.12 node3
 ```
-
-💡**Note**: 
-- Replace `192.168.x.10`, `192.168.x.11` and `192.168.x.12` with your own IP addresses.
 
 ### 4.5. Reboot Every Virtual Machine
 
@@ -105,26 +109,31 @@ Reboot every virtual machine.
 
 ### 4.6. Try to SSH to Every Virtual Machine
 
-
-For example, on `node2`, try to ssh to `node1` and `node3`:
+From every virtual machine, SSH to each other.
 
 ```bash
 ssh node1
-# Add the fingerprint to the known_hosts file
+exit
+
+ssh node2
 exit
 
 ssh node3
-# Add the fingerprint to the known_hosts file
 exit
 ```
 
-You should try to ssh to every virtual machine from each other to make sure they can communicate with each other.
-
 ## 5. Install zlib
 
-Download source code of zlib from the official website: [link](https://zlib.net/).
+Download source code of zlib from the official website [[link](https://zlib.net/)].
 
-You can download it on your host machine and then copy it to every virtual machine.
+💡**Note**: 
+- You can download it on your host machine and then transfer it to every virtual machine with `scp` command.  
+  For example:
+
+  ```bash
+  # Transfer "./target-file" on your local machine to "~/Desktop/target-file"
+  scp ./target-file <username>@<virutal-machine-ip-address>:~/Desktop
+  ```
 
 Suppose your downloaded file is named **zlib-1.3.1.tar.gz**.
 
@@ -135,9 +144,9 @@ tar -xf zlib-1.3.1.tar.gz
 
 cd zlib-1.3.1
 
-./configure --prefix=/usr/local/zlib-1.3.1
+sudo ./configure --prefix=/usr/local/zlib-1.3.1
 
-make -j $(nproc) all
+sudo make -j $(nproc) all
 
 sudo make install
 ```
@@ -154,7 +163,7 @@ Then run `source /etc/bash.bashrc` to make the changes take effect.
 
 ## 6. Install openmpi
 
-Download source code of openmpi from the official website: [link](https://www.open-mpi.org/software/).
+Download source code of openmpi from the official website [[link](https://www.open-mpi.org/software/)].
 
 Supposed the file you downloaded is named **openmpi-5.0.3.tar.bz2**.  
 
@@ -166,9 +175,9 @@ tar -xf openmpi-5.0.3.tar.bz2
 
 cd ./openmpi-5.0.3
 
-./configure --prefix=/usr/local/openmpi-5.0.3
+sudo ./configure --prefix=/usr/local/openmpi-5.0.3 --with-zlib=$ZLIB_HOME
 
-make -j $(nproc) all
+sudo make -j $(nproc) all
 
 sudo make install
 ```
