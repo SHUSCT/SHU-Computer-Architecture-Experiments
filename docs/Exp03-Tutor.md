@@ -13,7 +13,7 @@ Download the file named something like "**ubuntu-23.10.1-desktop-amd64.iso**".
 ## 3. Install Three Ubuntu 23 Virtual Machines in VMWare
 
 💡**Note**:
-- Set the computer name to be "node1", "node2" and "node3" repectively.
+- Set the computer name (host name) to be "node1", "node2" and "node3" repectively.
 - Create users with the same user name on each virtual machine.
 
 ## 4. Environment Setup
@@ -28,7 +28,7 @@ sudo apt update
 sudo apt install -y open-vm-tools open-vm-tools-desktop
 ```
 
-Restart every virtual machine, and now you are able to copy and paste content or files from your host machine to them!
+Restart every virtual machine, and now you are able to copy and paste any content or files from your host machine to the virtual machines!
 
 Install some other softwares on every virtual machine:
 
@@ -105,38 +105,20 @@ Reboot every virtual machine.
 
 ### 4.6. Try to SSH to Every Virtual Machine
 
-On `node1`, try to ssh to `node2` and `node3`:
 
-```bash
-ssh node2
-# Add the fingerprint to the known_hosts file
-exit
-ssh node3
-# Add the fingerprint to the known_hosts file
-exit
-```
-
-On `node2`, try to ssh to `node1` and `node3`:
+For example, on `node2`, try to ssh to `node1` and `node3`:
 
 ```bash
 ssh node1
 # Add the fingerprint to the known_hosts file
 exit
+
 ssh node3
 # Add the fingerprint to the known_hosts file
 exit
 ```
 
-On `node3`, try to ssh to `node1` and `node2`:
-
-```bash
-ssh node1
-# Add the fingerprint to the known_hosts file
-exit
-ssh node2
-# Add the fingerprint to the known_hosts file
-exit
-```
+You should try to ssh to every virtual machine from each other to make sure they can communicate with each other.
 
 ## 5. Install zlib
 
@@ -214,3 +196,74 @@ which mpicxx
 # Check where is mpirun
 which mpirun
 ```
+
+## 7. Build MPI Program
+
+💡**Note**: 
+- Following steps should be done on every virtual machine.
+
+### 7.1. Clone the Project
+
+Clone ***this*** project if you haven't done it yet:
+
+```bash
+git clone --recursive git@github.com:jamesnulliu/SHU-Computer-System-Architecture-Experiments.git SHU-CSAE
+
+cd SHU-CSAE
+```
+
+### 7.2. Build Yutils
+
+Yutils is a submoudle and shuold be built once for all.
+
+```bash
+bash scripts/build-libs.sh
+```
+
+You should be able to find "libYutils.a" in "./vendor/Yutils/lib/" directory.
+
+💡**Note**: 
+- You don't have to build yutils again if you have already built it.
+
+### 7.3. Build Exp03
+
+```bash
+OPENMPI_INIT
+
+CC=mpicc CXX=mpicxx bash scripts/build-exp03.sh
+```
+
+You should be able to find the executable file named "exp03" in "./exp03-mpi/bin" directory.
+
+### 7.4. Create a Hostfile
+
+Create a hostfile named "hostfile" in the "./" directory. Write following lines to the file:
+
+```bash
+node1 slots=2
+node2 slots=2
+node3 slots=2
+```
+
+Where `slots` is the number of processes you want to run on each node.
+
+### 7.5. Run the Program
+
+Run the program with following command; Replace `<nProcess>` with the overall number of processes you want to run:
+
+```bash
+mpirun --hostfile hostfile -np <nProcesses> ./exp03-mpi/bin/Release/Linux_x86_64/hellompi
+```
+
+You should be able to see some output like:
+
+```
+Hello, I am rank 5
+Hello, I am rank 3
+Hello, I am rank 4
+Hello, I am rank 2
+Hello, I am rank 1
+Hello, I am rank 0
+```
+
+
