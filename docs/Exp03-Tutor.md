@@ -13,8 +13,13 @@ Download the file named something like "**ubuntu-23.10.1-desktop-amd64.iso**".
 ## 3. Install Three Ubuntu 23 Virtual Machines in VMWare
 
 💡**Note**:
-- Set the computer name (host name) to be "node1", "node2" and "node3" repectively.
-- Create users with the same username on each virtual machine.
+- Set the computer name (host name) to be "**node1**", "**node2**" and "**node3**" repectively.
+- Create users with **the same username** on each virtual machine.
+
+> ***Why do we need to set the same username?***  
+> When we use MPI to run a program on multiple nodes, we need to share the program and data between these nodes.  
+> The "share" process is done by **passwordless ssh**, which requires the same username on every node.  
+> For example, when user "james" on node1 runs `ssh node2`, the system will try to login as "james" on node2.
 
 ## 4. Environment Setup
 
@@ -33,7 +38,7 @@ Restart every virtual machine, and now you are able to copy and paste any conten
 Install some other softwares on every virtual machine:
 
 ```bash
-sudo apt install -y build-essential cmake git vim-gtk3 openssh-server
+sudo apt install -y build-essential cmake git vim-gtk3 openssh-server m4 libcurl4-openssl-dev
 
 # Turn down the firewall for ssh:
 sudo ufw allow ssh
@@ -74,7 +79,7 @@ Suppose you get following results:
 Share the public key of every virtual machine to every other virtual machine:
 
 ```bash
-# Replace <username> with your current username
+# Replace <username> with your current username. All the virtual machines should have the same username.
 # Replace <IP-Address> with the corresponding IP address of the virtual machine
 ssh-copy-id <username>@<IP-Address>
 ```
@@ -83,19 +88,14 @@ The public keys are now written to the `~/.ssh/authorized_keys` file on every vi
 
 ### 4.4. Hosts File Configuration
 
-Edit the `/etc/hosts` file on every virtual machine:
-
-```bash
-sudo vim /etc/hosts
-```
-
-Add following lines to the file:
+Edit the "/etc/hosts" on every virtual machine with command `sudo vim /etc/hosts`. Add following lines to the file:
 
 ```bash
 # [Note]:
-#   If there has been something like: 
+#   In "/etc/hosts", if there are something like: 
 #   > 127.0.1.1 node<1/2/3>
-#   Remove this line.
+#   Remove this line or comment it out 
+#   by adding a `#` at the beginning of the line.
 
 # Replace `192.168.x.10`, `192.168.x.11` and `192.168.x.12` with your own IP addresses.
 192.168.x.10 node1
@@ -109,57 +109,35 @@ Reboot every virtual machine.
 
 ### 4.6. Try to SSH to Every Virtual Machine
 
-From every virtual machine, SSH to each other.
+From every virtual machine, SSH to each other, including itself:
 
 ```bash
+# Now you are in nodeX
 ssh node1
+# Now you are in node1
 exit
-
+# Now back to nodeX
 ssh node2
+# Now you are in node2
 exit
-
+# Now back to nodeX
 ssh node3
+# Now you are in node3
 exit
+# Now back to nodeX
 ```
 
 ## 5. Install zlib
 
-Download source code of zlib from the official website [[link](https://zlib.net/)].
-
-💡**Note**: 
-- You can download it on your host machine and then transfer it to every virtual machine with `scp` command.  
-  For example:
-
-  ```bash
-  # Transfer "./target-file" on your local machine to "~/Desktop/target-file"
-  scp ./target-file <username>@<virutal-machine-ip-address>:~/Desktop
-  ```
-
-Suppose your downloaded file is named **zlib-1.3.1.tar.gz**.
-
-Extract the file and install it:
+Run following command to install zlib:
 
 ```bash
-tar -xf zlib-1.3.1.tar.gz
-
-cd zlib-1.3.1
-
-sudo ./configure --prefix=/usr/local/zlib-1.3.1
-
-sudo make -j $(nproc) all
-
-sudo make install
+sudo apt install -y zlib1g-dev
 ```
 
-Edit **/etc/bash.bashrc** file on every virtual machine with command `sudo vim /etc/bash.bashrc`.  Add following lines to the file:
-
-```bash
-export ZLIB_HOME=/usr/local/zlib-1.3.1
-
-export LD_LIBRARY_PATH=$ZLIB_HOME/lib:$LD_LIBRARY_PATH
-```
-
-Then run `source /etc/bash.bashrc` to make the changes take effect.
+> ***Why do we need to install zlib?***  
+> zlib is a software library used for data compression.  
+> It is used by OpenMPI to compress data during communication between different nodes.
 
 ## 6. Install openmpi
 
@@ -175,9 +153,10 @@ tar -xf openmpi-5.0.3.tar.bz2
 
 cd ./openmpi-5.0.3
 
-sudo ./configure --prefix=/usr/local/openmpi-5.0.3 --with-zlib=$ZLIB_HOME
+# If you have cuda installed, you can add "--with-cuda=/path/to/cuda" to the following command.
+./configure --prefix=/usr/local/openmpi-5.0.3 --with-zlib
 
-sudo make -j $(nproc) all
+make -j $(nproc) all
 
 sudo make install
 ```
@@ -229,7 +208,7 @@ Yutils is a submoudle and shuold be built once for all.
 bash scripts/build-libs.sh
 ```
 
-You should be able to find "libYutils.a" in "./vendor/Yutils/lib/" directory.
+After building, you should be able to find "libYutils.a" in "./vendor/Yutils/lib/" directory.
 
 💡**Note**: 
 - You don't have to build yutils again if you have already built it.
@@ -249,19 +228,20 @@ You should be able to find the executable file named "exp03" in "./exp03-mpi/bin
 Create a hostfile named "hostfile" in the "./" directory. Write following lines to the file:
 
 ```bash
+# `slots` is the number of processes you want to run on each node.
+# `node<1/2/3>` are ip addresses defined in "/etc/hosts".
+
 node1 slots=2
 node2 slots=2
 node3 slots=2
 ```
-
-Where `slots` is the number of processes you want to run on each node.
 
 ### 7.5. Run the Program
 
 Run the program with following command; Replace `<nProcess>` with the overall number of processes you want to run:
 
 ```bash
-mpirun --hostfile hostfile -np <nProcesses> ./exp03-mpi/bin/Release/Linux_x86_64/hellompi
+mpiexec --hostfile hostfile -np <nProcesses> ./exp03-mpi/bin/Release/Linux_x86_64/hellompi
 ```
 
 You should be able to see some output like:

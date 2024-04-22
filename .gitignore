@@ -15,3 +15,5 @@ _deps
 
 .vscode/*
 !.vscode/*.example
+
+**/hostfile
