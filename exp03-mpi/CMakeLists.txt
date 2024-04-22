@@ -25,7 +25,6 @@ else()
 endif()
 
 if(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
-    # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -qopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -qopenmp")
     find_package(TBB REQUIRED)
@@ -36,6 +35,9 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "IntelLLVM")
     else()
         message(FATAL_ERROR "TBB Not Found")
     endif()
+else()
+    set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
+    set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
 endif()
 
 # Link to Yutils library
