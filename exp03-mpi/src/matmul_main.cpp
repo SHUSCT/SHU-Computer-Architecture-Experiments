@@ -1,64 +1,79 @@
-#include <mpi.h>
+#include <algorithm>
 #include <iostream>
+#include <mpi.h>
+#include <sstream>
 #include <vector>
 
-#define N 4  // 假设矩阵大小为 N x N
+#include <Yutils/ArgParser.hpp>
+#include <Yutils/Logger.hpp>
+#include <Yutils/Random.hpp>
+#include <Yutils/SimpleWriter.hpp>
 
-void matMult(double *a, double *b, double *c, int n) {
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            c[i * n + j] = 0;
-            for (int k = 0; k < n; k++) {
-                c[i * n + j] += a[i * n + k] * b[k * n + j];
+void matMult(double* a, double* b, double* c, int nCol, int nRow) {
+    for (int i = 0; i < nCol; i++) {
+        for (int j = 0; j < nRow; j++) {
+            c[i * nRow + j] = 0;
+            for (int k = 0; k < nRow; k++) {
+                c[i * nRow + j] += a[i * nRow + k] * b[k * nRow + j];
             }
         }
     }
 }
 
-int main(int argc, char **argv) {
-    int rank, size;
+void initMat(std::vector<double>& mat)
+{
+    yutils::RandUniform<double> randGen;
+    randGen.setParams(0.0, 10.0);
+    std::ranges::generate(mat, randGen);
+}
+
+int main(int argc, char** argv)
+{
+    int rank,    // rank of the current process
+        nRanks;  // total number of processes
+
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
-    MPI_Comm_size(MPI_COMM_WORLD, &size);
+    MPI_Comm_size(MPI_COMM_WORLD, &nRanks);
 
-    int n = N;
-    double *a, *b, *c, *sub_a, *sub_c;
+    yutils::ArgParser parser;
+    parser.addOption("n", "Matrix Size", "int", "4");
+    parser.addOption("o", "Output File Path", "string", "output.csv");
 
-    a = (double *)malloc(n * n * sizeof(double));
-    b = (double *)malloc(n * n * sizeof(double));
-    c = (double *)malloc(n * n * sizeof(double));
-    sub_a = (double *)malloc(n * n / size * sizeof(double));
-    sub_c = (double *)malloc(n * n / size * sizeof(double));
+    parser.parse(argc, argv);
+    int matSize = *parser.get<int>("n");
+    std::string outPath = *parser.get<std::string>("o");
 
-    // std::vector<double> a(n*n);
-    // std::vector<double> b(n*n);
-    // std::vector<double> c(n*n);
+    std::vector<double> a(matSize * matSize, 0), b(matSize * matSize, 0), c(matSize * matSize, 0),
+        sub_a(matSize * matSize / nRanks), sub_c(matSize * matSize / nRanks);
 
     if (rank == 0) {
-        for (int i = 0; i < n * n; i++) {
-            a[i] = 1.0;
-            b[i] = 1.0;
-        }
+        initMat(a);
+        initMat(b);
     }
 
-    MPI_Bcast(b, n * n, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    MPI_Scatter(a, n * n / size, MPI_DOUBLE, sub_a, n * n / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
-    matMult(sub_a, b, sub_c, n / size);
-    MPI_Gather(sub_c, n * n / size, MPI_DOUBLE, c, n * n / size, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Scatter(a.data(), matSize * matSize / nRanks, MPI_DOUBLE, sub_a.data(),
+                matSize * matSize / nRanks, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    MPI_Bcast(b.data(), b.size(), MPI_DOUBLE, 0, MPI_COMM_WORLD);
+    matMult(sub_a.data(), b.data(), sub_c.data(), matSize / nRanks, matSize);
+    MPI_Gather(sub_c.data(), matSize * matSize / nRanks, MPI_DOUBLE, c.data(),
+               matSize * matSize / nRanks, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+
     if (rank == 0) {
-        printf("Result Matrix C:\n");
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                printf("%6.2f ", c[i * n + j]);
+        std::string row;
+        for (int i = 0; i < matSize; i++) {
+            row.clear();
+            for (int j = 0; j < matSize; j++) {
+                row += std::to_string(c[i * matSize + j]);
+                if (j != matSize - 1) {
+                    row += ",";
+                }
             }
-            printf("\n");
+            std::cout << row << std::endl;
         }
     }
-    free(a);
-    free(b);
-    free(c);
-    free(sub_a);
-    free(sub_c);
+
     MPI_Finalize();
+
     return 0;
 }
