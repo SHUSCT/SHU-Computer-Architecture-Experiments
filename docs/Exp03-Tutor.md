@@ -17,7 +17,7 @@ Download the file named something like "**ubuntu-23.10.1-desktop-amd64.iso**".
 - Create users with **the same username** on each virtual machine.
 
 > ***Why do we need to set the same username?***  
-> When we use MPI to run a program on multiple nodes, we need to share the program and data between these nodes.  
+> When using MPI to run a program on multiple nodes, we need to share the program and data between these nodes.   
 > The "share" process is done by **passwordless ssh**, which requires the same username on every node.  
 > For example, when user "james" on node1 runs `ssh node2`, the system will try to login as "james" on node2.
 
