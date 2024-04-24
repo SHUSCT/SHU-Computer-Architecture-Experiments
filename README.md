@@ -9,6 +9,8 @@
 
 ## Environment Setup
 
+Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env Setup Guide for Windows](./docs/Env_Setup_Guide_for_Windows.md) for detailed instructions.
+
 <div align="center">
 
 | OS | Compiler | Build Tools | Make Tools |
@@ -17,8 +19,6 @@
 | Windows | msvc >= 19 | cmake >= 3.21 | ninja |
 
 </div>
-
-Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env Setup Guide for Windows](./docs/Env_Setup_Guide_for_Windows.md) for details.
 
 ## Quick Start
 
