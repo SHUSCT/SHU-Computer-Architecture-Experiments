@@ -22,14 +22,26 @@ Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env S
 
 ## Quick Start
 
-To build the project, run the following commands:
+Clone the project (ssh is reconmmended):
 
 ```bash
-# On Linux:
-bash ./scripts/build.sh Release
+git clone --recursive git@github.com:jamesnulliu/SHU-Computer-System-Architecture-Experiments.git SHU-CSAE
 
-# On Windows:
-./scripts/build.ps1 Release
+cd SHU-CSAE
 ```
 
-You will get target binaries in the "./bin" directory.
+Build required libraries:
+
+```bash
+bash ./scripts/build-libs.sh
+```
+
+<div align="center">
+
+| Status | Experiment | Documentation | Notes |
+|:------:|------------|:-------------:|-------|
+| ❎ | Exp01: VM and SSH | | This exp will be done in Exp03. |
+| ✅ | Exp02: OpenMP | | This exp can be done both on Linux and Windows. |
+| ⏩ | Exp03: MPI | [link-linux](./docs/Exp03-Tutor.md) | Only Linux is supported. |
+</div>
+
