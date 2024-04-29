@@ -12,12 +12,13 @@
 
 /**
  * @brief Multiply two matrices A and B, and store the result in matrix C.
- * 
+ *
  * @param A Matrix A, with shape (n, m)
  * @param B Matrix B, with shape (m, m)
  * @param C Matrix C, with shape (n, m)
-*/
-void matMult(double* A, double* B, double* C, int n, int m) {
+ */
+void matMult(double* A, double* B, double* C, int n, int m)
+{
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             C[i * m + j] = 0;
@@ -30,13 +31,14 @@ void matMult(double* A, double* B, double* C, int n, int m) {
 
 /**
  * @brief Multiply two matrices A and B, and store the result in matrix C.
- * 
+ *
  * @param A Matrix A, with shape (n, m)
  * @param B Matrix B, with shape (m, m)
  * @param C Matrix C, with shape (n, m)
-*/
-void matMult_OMP(double* A, double* B, double* C, int n, int m) {
-    #pragma omp parallel for
+ */
+void matMult_OMP(double* A, double* B, double* C, int n, int m)
+{
+#pragma omp parallel for
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < m; j++) {
             C[i * m + j] = 0;

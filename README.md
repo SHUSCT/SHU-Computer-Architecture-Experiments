@@ -41,7 +41,8 @@ bash ./scripts/build-libs.sh
 | Status | Experiment | Documentation | Notes |
 |:------:|------------|:-------------:|-------|
 | ❎ | Exp01: VM and SSH | | This exp will be done in Exp03. |
-| ✅ | Exp02: OpenMP | | This exp can be done both on Linux and Windows. |
-| ⏩ | Exp03: MPI | [link-linux](./docs/Exp03-Tutor.md) | Only Linux is supported. |
+| ✅ | Exp02: OpenMP | [Exp02-Tutor.md](./docs/Exp02-Tutor.md) | This exp can be done both on Linux and Windows. |
+| ⏩ | Exp03: MPI | [Exp03-Tutor.md](./docs/Exp03-Tutor.md) | Only Linux is supported. |
+
 </div>
 
