@@ -25,9 +25,9 @@ Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env S
 Clone the project (ssh is reconmmended):
 
 ```bash
-git clone --recursive git@github.com:SHUSCT/SHU-CSAE.git
+git clone --recursive git@github.com:SHUSCT/SHU-Computer-Architecture-Experiments.git SHU-CAE
 
-cd SHU-CSAE
+cd SHU-CAE
 ```
 
 Build required libraries:
