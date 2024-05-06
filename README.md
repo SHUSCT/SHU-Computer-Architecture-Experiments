@@ -38,11 +38,14 @@ bash ./scripts/build-libs.sh
 
 <div align="center">
 
-| Status | Experiment | Documentation | Notes |
-|:------:|------------|:-------------:|-------|
-| ❎ | Exp01: VM and SSH | | This exp will be done in Exp03. |
-| ✅ | Exp02: OpenMP | [Exp02-Tutor.md](./docs/Exp02-Tutor.md) | This exp can be done both on Linux and Windows. |
-| ⏩ | Exp03: MPI | [Exp03-Tutor.md](./docs/Exp03-Tutor.md) | Only Linux is supported. |
+| Status | Experiment | Documentation | Platform (x64) |
+|:------:|------------|:-------------:|:-------:|
+| ❎ | Exp01: VM and SSH * | | |
+| ✅ | Exp02: OpenMP | [Exp02-Tutor.md](./docs/Exp02-Tutor.md) | Linux/Windows |
+| ⏩ | Exp03: MPI | [Exp03-Tutor.md](./docs/Exp03-Tutor.md) | Linux |
+| ⏩ | Exp04: HPL | [Exp04-Tutor.md](./docs/Exp04-Tutor.md) | Linux |
 
 </div>
+
+*: Exp01 would be done in Exp03 for environment setup.
 
