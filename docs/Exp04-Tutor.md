@@ -114,4 +114,49 @@ mpirun -np 4 ./xhpl
 ```
 
 ## 4. Tuning HPL
-To do.
+You should adjust the relevant parameters in the HPL.dat file **according to the hardware configuration of the node**.
+
+- **Before Linpack**
+
+  * For machines where the processor's brand is Intel , **turning off Hyper-Threading** improves HPL performance. This may occur because the core’s resources, such as cache, execution engine, and functional units, are shared between the two threads in a Hyper-Threaded core.
+  * **Disabling Intel AVX-512 Instructions**. After Ice Lake CPUs using AVX-512, CPU's power and temperature will reach the limit, which will result to the fact that the maximum core frequency will be reduced. Meanwhile, while using Intel oneAPI Math Kernel Library, the default settings of Intel MKL also use AVX-512 instruction set.
+
+- **Lines 5 to 6**
+
+  ```shell
+  1 # of problems sizes (N)
+  143600 Ns 
+  ```
+
+  * N denotes the number and size of matrices to be solved. The larger the matrix size N, the larger the percentage of effective computation, and the higher the system's floating-point processing performance. However, the larger matrix size will result in more memory consumption, and if the system's actual memory space is insufficient, the use of cache will be significantly reduced the performance. 
+
+  * It is optimal for the matrix to occupy about **80% of the total system memory**, i.e., N × N × 8 = total system memory × 80% (**where total memory is in bytes**).
+
+- **Lines 7 to 8**
+
+  ```shell
+  1 # of NBs
+  384 NBs 
+  ```
+
+  NBs indicate the size of the matrix chunks in the matrix solving process. The chunk size has a great impact on the performance, and the selection of NB is closely related to many factors of hardware and software.The selection of NB value is mainly based on the optimal value through actual testing, and generally follows the following rules:
+
+  - NB can not be too large or too small, **generally less than 384.**
+  - **NB × 8** must be a multiple of the **cache line**.
+  - The size of the NB is related to the communication method, matrix size, network, processor speed, etc..
+
+  Generally, a few better NB values can be obtained by single node or single CPU testing, but when the system size increases and the problem size becomes larger, the performance obtained from some NB values will decrease. **Therefore, it is recommended to select 3 NB values with good performance in small-scale testing, and then test these choices through large-scale testing.**
+
+- **Lines 10 to 12**
+
+  ```shell
+  1 # of process grids (P x Q)
+  1 Ps  
+  1 Qs 
+  ```
+
+  P denotes the number of processors in the horizontal direction and Q denotes the number of processors in the vertical direction. P x Q denotes a two-dimensional processor grid. P x Q = number of processes. Generally one process corresponds to one CPU to get the best performance. The values of P and Q generally follow the following pattern:
+
+  - **P x Q = Number of Pocesses.**
+  - **P ≤ Q**. In general P takes a smaller value than Q because the amount of columnar communication (the number of communications and the amount of data communicated) is much larger than the horizontal communication.
+  - **P is recommended to be chosen as a power of 2**. Horizontal communication in HPL uses the Binary Exchange method, and the performance is optimal when the number of processors in the horizontal direction is a power of two.
