@@ -38,11 +38,11 @@ Install BLIS:
 sudo bash ./install.sh -t /usr/local/aocl
 ```
 
-Add following lines to the end of **/etc/bash.bashrc**:
+Add following lines to the end of **/etc/bash.bashrc** (Replace `<x.x.x>` with your BLIS version number; Use command `ls /usr/local/aocl` if you are not sure):
 
 ```bash
 # >>> BLIS >>>
-export BLIS_HOME="/usr/local/aocl/4.2.0/gcc"
+export BLIS_HOME="/usr/local/aocl/<x.x.x>/gcc"
 alias BLIS_INIT="source $BLIS_HOME/amd-libs.cfg"
 # <<< BLIS <<<
 ```
@@ -74,7 +74,7 @@ cd hpl-X.X
 ```
 
 **Note**:
-- You should check "README" for the detailed information. Next, we will just provide some examples.
+- You should check "README" for the detailed information. Here we will just provide some examples.
 
 ### 3.2. Configure HPL
 
