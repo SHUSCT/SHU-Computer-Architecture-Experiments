@@ -50,6 +50,9 @@ bash ./scripts/build-libs.sh
 | ⏩ | Exp08: NFS |  | Linux |
 | ⏩ | Exp09: Docker and Singularity | | Linux/Windows |
 | ⏩ | Exp10: Slurm | | Linux |
+| ⏩ | Exp10: Module and Spack | | Linux |
+| ⏩ | Exp11: Power Monitor and Control | | Linux |
+
 
 
 </div>
