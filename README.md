@@ -40,10 +40,17 @@ bash ./scripts/build-libs.sh
 
 | Status | Experiment | Documentation | Platform (x64) |
 |:------:|------------|:-------------:|:-------:|
-| ❎ | Exp01: VM and SSH * | | |
+| ❎ | Exp01: Virtual Machine and SSH * | | |
 | ✅ | Exp02: OpenMP | [Exp02-Tutor.md](./docs/Exp02-Tutor.md) | Linux/Windows |
 | ⏩ | Exp03: MPI | [Exp03-Tutor.md](./docs/Exp03-Tutor.md) | Linux |
 | ⏩ | Exp04: HPL | [Exp04-Tutor.md](./docs/Exp04-Tutor.md) | Linux |
+| ⏩ | Exp05: CUDA |  | Linux/Windows |
+| ⏩ | Exp06: Profiler |  | Linux |
+| ⏩ | Exp07: Shell |  | Linux |
+| ⏩ | Exp08: NFS |  | Linux |
+| ⏩ | Exp09: Docker and Singularity | | Linux/Windows |
+| ⏩ | Exp10: Slurm | | Linux |
+
 
 </div>
 
