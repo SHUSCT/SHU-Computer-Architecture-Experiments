@@ -33,6 +33,7 @@ endif()
 
 # Link to Yutils library
 include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
+# [note] Change the path to the library file according to your system
 link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
 
 # Get all sources files
@@ -65,22 +66,23 @@ add_executable(computePi ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/computePi_main.cp
 # sharedVars
 add_executable(sharedVars ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/sharedVars_main.cpp)
 
-# Try to enable CUDA
-enable_language(CUDA)
-if(CMAKE_CUDA_COMPILER)
-    message(STATUS "CUDA found")
-    # innerProduct
-    add_executable(
-        innerProduct 
-        ${CXX_SRCS} 
-        ${PROJECT_SOURCE_DIR}/src/innerProduct_main.cpp
-        ${PROJECT_SOURCE_DIR}/src/innerProduct.cu
-    )
-    set_target_properties(
-        innerProduct
-        PROPERTIES
-        CUDA_STANDARD 14
-    )
-else()
-    message(STATUS "CUDA not found. Skip building CUDA examples.")
-endif()
+# [ToDo] Move CUDA to New Episode
+# # Try to find CUDA
+# enable_language(CUDA)
+# if(CMAKE_CUDA_COMPILER)
+#     message(STATUS "CUDA found")
+#     # innerProduct
+#     add_executable(
+#         innerProduct 
+#         ${CXX_SRCS} 
+#         ${PROJECT_SOURCE_DIR}/src/innerProduct_main.cpp
+#         ${PROJECT_SOURCE_DIR}/src/innerProduct.cu
+#     )
+#     set_target_properties(
+#         innerProduct
+#         PROPERTIES
+#         CUDA_STANDARD 14
+#     )
+# else()
+#     message(STATUS "CUDA not found. Skip building CUDA examples.")
+# endif()

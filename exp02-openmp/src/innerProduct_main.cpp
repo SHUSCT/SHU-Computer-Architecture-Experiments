@@ -1,4 +1,3 @@
-#include "InnerProduct.hpp"
 #include <algorithm>
 #include <climits>
 #include <format>
@@ -7,6 +6,11 @@
 #include <string>
 #include "Yutils/TimeCounter.hpp"
 #include "Yutils/Random.hpp"
+
+extern "C"
+{
+    void cuInnerProduct(float* a, float* b, float* c, int n);
+}
 
 using yutils::TimeCounter;
 using yutils::RandUniform;

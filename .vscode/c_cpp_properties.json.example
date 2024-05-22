@@ -3,7 +3,8 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/include/**"
+                "${env:OPENMPI_HOME}/include",
+                "${workspaceFolder}/vendor/**/include"
             ],
             "defines": [],
             "cStandard": "c17",
@@ -14,7 +15,8 @@
         {
             "name": "Windows",
             "includePath": [
-                "${workspaceFolder}/include/**"
+                "${env:OPENMPI_HOME}/include",
+                "${workspaceFolder}/vendor/**/include"
             ],
             "defines": [],
             "cStandard": "c17",
