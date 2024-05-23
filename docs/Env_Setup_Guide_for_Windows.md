@@ -16,9 +16,11 @@ If you missed any of the components, you can modify the installation by running 
 
 ## 2. Install PowerShell 7
 
-Check this website: [Install PowerShell on Windows](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows).
+Open Command Prompt and use `winget` to install PowerShell 7:
 
-Make sure you have installed the newest version of PowerShell.
+```bash
+winget install --id Microsoft.Powershell --source winge
+```
 
 ## 3. Set Environment Variables
 
@@ -32,4 +34,4 @@ To make your life easier, we provide a script to set the environment variables f
 pwsh .\scripts\set-env-vars-windows.ps1
 ```
 
-Reopen the terminal (and IDE if you have it open) to apply the changes.
+Reopen the terminal (and any application if you have it opened) to apply the changes.

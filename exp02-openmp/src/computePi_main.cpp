@@ -102,7 +102,7 @@ int main()
                              pi_OMP);
 
     double accleration = double(baseline) / timeCounter.msecond();
-    std::cout << std::format("Accleration ratio: {}", accleration);
+    std::cout << std::format("Accleration ratio: {}\n", accleration);
 
     return 0;
 }

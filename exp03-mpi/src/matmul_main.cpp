@@ -72,6 +72,12 @@ int main(int argc, char** argv)
     auto matSize = parser.get<int>("n").value();
     auto outPath = parser.get<std::string>("o").value();
 
+    if (matSize % nRanks != 0) {
+        YCRITICAL("Matrix size must be divisible by the number of ranks.");
+        MPI_Finalize();
+        return 1;
+    }
+
     yutils::TimeCounter timeCounter;
 
     std::vector<double> a(matSize * matSize, 0), b(matSize * matSize, 0), c(matSize * matSize, 0),

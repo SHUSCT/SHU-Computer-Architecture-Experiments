@@ -33,8 +33,13 @@ endif()
 
 # Link to Yutils library
 include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
-# [note] Change the path to the library file according to your system
-link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
+
+# [note] Change the path to the library file according to your local environment
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
+elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
+    link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/Yutils.lib)
+endif()
 
 # Get all sources files
 file(

@@ -9,17 +9,17 @@ if (-not $build_type) {
 }
 
 $CURRENT_DIR = Get-Location
-$Yutils_DIR = "$CURRENT_DIR/vendor/Yutils"
+$PROJ_DIR = "$CURRENT_DIR/exp02-openmp"
 
 ## [Optional] Remove the old build
-# Remove-Item -Recurse -Force "$Yutils_DIR/build"
+# Remove-Item -Recurse -Force "$PROJ_DIR/build"
 
 # Create the build directory if it doesn't exist
-if (-not (Test-Path "$Yutils_DIR/build")) {
-    New-Item -ItemType Directory -Path "$Yutils_DIR/build"
+if (-not (Test-Path "$PROJ_DIR/build")) {
+    New-Item -ItemType Directory -Path "$PROJ_DIR/build"
 }
 
-Set-Location "$Yutils_DIR/build"
+Set-Location "$PROJ_DIR/build"
 
 cmake .. -DCMAKE_BUILD_TYPE="${build_type}" -G "Ninja"
 
@@ -27,4 +27,4 @@ ninja
 
 Set-Location -Path $CURRENT_DIR
 
-Write-Host "[SHU-CAE] >>> All libs build finished." -ForegroundColor Green
+Write-Host "[SHU-CAE] >>> Exp02 build finished." -ForegroundColor Green

@@ -2,6 +2,8 @@
 
 ## 1. Install VMWare Workstation Pro
 
+...
+
 ## 2. Download Ubuntu 23 Desktop iso File
 
 Official website: [link](https://ubuntu.com/download/desktop).
@@ -38,7 +40,7 @@ Restart every virtual machine, and now you are able to copy and paste any conten
 Install some other softwares on every virtual machine:
 
 ```bash
-sudo apt install -y build-essential cmake git vim-gtk3 openssh-server m4 libcurl4-openssl-dev
+sudo apt install -y build-essential cmake git vim-gtk3 openssh-server m4 libcurl4-openssl-dev zlib1g-dev
 
 # Turn down the firewall for ssh:
 sudo ufw allow ssh
@@ -127,25 +129,13 @@ exit
 # Now back to nodeX
 ```
 
-## 5. Install zlib
-
-Run following command to install zlib:
-
-```bash
-sudo apt install -y zlib1g-dev
-```
-
-> ***Why do we need to install zlib?***  
-> zlib is a software library used for data compression.  
-> It is used by OpenMPI to compress data during communication between different nodes.
-
-## 6. Install openmpi
+## 5. Install openmpi
 
 Download source code of openmpi from the official website [[link](https://www.open-mpi.org/software/)].
 
 Supposed the file you downloaded is named **openmpi-5.0.3.tar.bz2**.  
 
-Open your terminal and change directory to the path of the compressed file.
+Open your terminal and change to the directory of the compressed file.
 
 ```bash
 # Extact the file, and you will get a folder named "openmpi-5.0.3"
@@ -161,7 +151,7 @@ make -j $(nproc) all
 sudo make install
 ```
 
-Edit **/etc/bash.bashrc** file with command `sudo vim /etc/bash.bashrc`, add following lines to the end of that file:
+Edit **/etc/bash.bashrc** file with command `sudo vim /etc/bash.bashrc`, and add following lines to the end of that file:
 
 ```bash
 # >>> openmpi >>>
@@ -185,35 +175,12 @@ which mpicxx
 which mpirun
 ```
 
-## 7. Build MPI Program
+## 6. Build MPI Program
 
 💡**Note**: 
 - Following steps should be done on every virtual machine.
 
-### 7.1. Clone the Project
-
-Clone ***this*** project if you haven't done it yet:
-
-```bash
-git clone --recursive git@github.com:jamesnulliu/SHU-Computer-System-Architecture-Experiments.git SHU-CSAE
-
-cd SHU-CSAE
-```
-
-### 7.2. Build Yutils
-
-Yutils is a submoudle and shuold be built once for all.
-
-```bash
-bash scripts/build-libs.sh
-```
-
-After building, you should be able to find "libYutils.a" in "./vendor/Yutils/lib/" directory.
-
-💡**Note**: 
-- You don't have to build yutils again if you have already built it.
-
-### 7.3. Build Exp03
+### 6.1. Build Exp03
 
 ```bash
 OPENMPI_INIT
@@ -223,7 +190,7 @@ CC=mpicc CXX=mpicxx bash scripts/build-exp03.sh
 
 You should be able to find the executable file named "exp03" in "./exp03-mpi/bin" directory.
 
-### 7.4. Create a Hostfile
+### 6.2. Create a Hostfile
 
 Create a hostfile named "hostfile" in the "./" directory. Write following lines to the file:
 
@@ -236,15 +203,17 @@ node2 slots=2
 node3 slots=2
 ```
 
-### 7.5. Run the Program
+### 6.3. Run the Program
 
 Run the program with following command; Replace `<nProcess>` with the overall number of processes you want to run:
+
+**HelloMPI**:
 
 ```bash
 mpiexec --hostfile hostfile -np <nProcesses> ./exp03-mpi/bin/Release/Linux_x86_64/hellompi
 ```
 
-You should be able to see some output like:
+You should see some output like:
 
 ```
 Hello, I am rank 5
@@ -255,4 +224,11 @@ Hello, I am rank 1
 Hello, I am rank 0
 ```
 
+**Matrix Multiplication**:
+
+```bash
+mpiexec --hostfile hostfile -np <nProcesses> ./exp03-mpi/bin/Release/Linux_x86_64/matmul -n <matrixSize> -o <outputFile>
+```
+
+You should see the time cost of the matrix multiplication.
 

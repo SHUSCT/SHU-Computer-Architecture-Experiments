@@ -57,6 +57,13 @@ BLIS_INIT
 
 To do.
 
+### 2.4. Whatever CPU
+
+You can simply install OpenBLAS for any CPU:
+
+```bash
+```
+
 ## 3. Install HPL
 
 ### 3.1. Download HPL

@@ -13,7 +13,7 @@ Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env S
 
 <div align="center">
 
-| OS | Compiler | Build Tools | Make Tools |
+| OS | Compiler | Pre-make Tools | Make Tools |
 |:--:|:--------:|:-----------:|:----------:|
 | Linux | g++ >= 13 | cmake >= 3.21 | make |
 | Windows | msvc >= 19 | cmake >= 3.21 | ninja |
@@ -22,25 +22,33 @@ Check [Env Setup Guide for Linux](./docs/Env_Setup_Guide_for_Linux.md) or [Env S
 
 ## Quick Start
 
-Clone the project (ssh is reconmmended):
+Clone the project:
+
+**Note**:
+- On windows, use the application `Git Bash` instead of `cmd` or `powershell` to clone the repo, otherwise the submodule will not be cloned.
+- It is not recommanded, but you can change the repo url and submodule url to http mannualy if you don't have ssh key setup.
 
 ```bash
-git clone --recursive git@github.com:SHUSCT/SHU-Computer-Architecture-Experiments.git SHU-CAE
-
-cd SHU-CAE
+git clone --recursive git@github.com:SHUSCT/SHU-Computer-Architecture-Experiments.git SHU-CAE && cd SHU-CAE
 ```
 
 Build required libraries:
 
 ```bash
+# On Linux
 bash ./scripts/build-libs.sh
+# On Windows
+pwsh ./scripts/build-libs.ps1
 ```
+
+
+List of all experiments:
 
 <div align="center">
 
 | Status | Experiment | Documentation | Platform (x64) |
 |:------:|------------|:-------------:|:-------:|
-| ❎ | Exp01: Virtual Machine and SSH * | | |
+| ❎ | Exp01: Virtual Machine and SSH **\*** | | |
 | ✅ | Exp02: OpenMP | [Exp02-Tutor.md](./docs/Exp02-Tutor.md) | Linux/Windows |
 | ⏩ | Exp03: MPI | [Exp03-Tutor.md](./docs/Exp03-Tutor.md) | Linux |
 | ⏩ | Exp04: HPL | [Exp04-Tutor.md](./docs/Exp04-Tutor.md) | Linux |
@@ -54,5 +62,5 @@ bash ./scripts/build-libs.sh
 
 </div>
 
-*: Exp01 would be done in Exp03 for environment setup.
+**\*** : Exp01 would be done in Exp03 for environment setup.
 
