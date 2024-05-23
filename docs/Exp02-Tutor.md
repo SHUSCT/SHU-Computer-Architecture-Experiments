@@ -21,9 +21,6 @@ On Windows:
 # ToDo
 ```
 
-💡**Note**:
-- A cuda program will be automatically built if you have cuda installed.
-
 ## 3. Execute Program
 
 Execeute the programs under "./exp02-openmp/bin" directory.
