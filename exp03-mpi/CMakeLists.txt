@@ -44,16 +44,6 @@ endif()
 include_directories(${PROJECT_SOURCE_DIR}/../vendor/Yutils/include)
 link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/libYutils.a)
 
-# Get all sources files
-file(
-    GLOB_RECURSE CXX_SRCS 
-    ${PROJECT_SOURCE_DIR}/src/*.cpp 
-)
-list(
-    FILTER CXX_SRCS EXCLUDE 
-    REGEX ${PROJECT_SOURCE_DIR}/src/.*main.cpp$
-)
-
 # Set output directory
 string(
     CONCAT BIN_OUTPUT_PATH
@@ -63,7 +53,7 @@ string(
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_PATH})
 
 # hellompi
-add_executable(hellompi ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/hellompi_main.cpp)
+add_executable(hellompi ${PROJECT_SOURCE_DIR}/src/hellompi_main.cpp)
 
 # matmul
-add_executable(matmul ${CXX_SRCS} ${PROJECT_SOURCE_DIR}/src/matmul_main.cpp)
+add_executable(matmul ${PROJECT_SOURCE_DIR}/src/matmul_main.cpp)

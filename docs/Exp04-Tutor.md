@@ -22,9 +22,9 @@ lscpu
 
 If you have an AMD CPU, you should install **BLIS** for BLAS.
 
-Go to the official website of BLIS [[link](https://www.amd.com/en/developer/aocl.html)], download "**AOCL X.X binary packages compiled with GCC Y.Y**", and you will get a file named "**aocl-linux-gcc-X.X.X.tar.gz**".
+Go to the official website of BLIS [[link](https://www.amd.com/en/developer/aocl.html)], download `AOCL X.X binary packages compiled with GCC Y.Y`, and you will get a file named `aocl-linux-gcc-X.X.X.tar.gz`.
 
-Extract the file, and you will get a folder named "**aocl-linux-gcc-X.X.X**":
+Extract the file, and you will get a folder named `aocl-linux-gcc-X.X.X`:
 
 ```bash
 tar -xf aocl-linux-gcc-X.X.X.tar.gz
@@ -112,7 +112,7 @@ tar -xvf hpl-2.3.tar.gz && cd ./hpl-2.3
 
 #### 3.2.1. Configure for AMD CPU (with BLIS and OPENMPI)
 
-Copy the template file we provide: [Make.Linux64_BLIS](../exp05-hpl/Make.Linux64_BLIS) into the project directory `hpl-2.3`:
+Copy the template file we provide: [Make.Linux64_BLIS](../exp04-hpl/Make.Linux64_BLIS) into the project directory `hpl-2.3`:
 
 Change following lines in the file to match your system configuration:
 - Line 70, absolute path to hpl project directory (which is named `hpl-2.3`).
@@ -131,7 +131,7 @@ To do.
 
 #### 3.2.3. Configure for Any CPU (with OpenBLAS and OpenMPI)
 
-Copy the template file we provide: [Make.Linux64_OpenBLAS](../exp05-hpl/Make.Linux64_OpenBLAS) into the project directory `hpl-2.3`:
+Copy the template file we provide: [Make.Linux64_OpenBLAS](../exp04-hpl/Make.Linux64_OpenBLAS) into the project directory `hpl-2.3`:
 
 Change following lines in the file to match your system configuration:
 - Line 70, absolute path to hpl project directory (which is named `hpl-2.3`).
@@ -186,9 +186,9 @@ You should adjust the relevant parameters in file `HPL.dat` **according to your 
   143600 Ns 
   ```
 
-  - N denotes the number and size of matrices to be solved. The larger the matrix size N, the larger the percentage of effective computation, and the higher the system's floating-point processing performance. However, the larger matrix size will result in more memory consumption, and if the system's actual memory space is insufficient, the use of cache will be significantly reduced the performance. 
+  - `N` denotes the number and size of matrices to be solved. The larger the matrix size `N`, the larger the percentage of effective computation, and the higher the system's floating-point processing performance. However, the larger matrix size will result in more memory consumption, and if the system's actual memory space is insufficient, the use of cache will be significantly reduced the performance. 
 
-  - It is optimal for the matrix to occupy about **80% of the total system memory**, i.e., N × N × 8 = total system memory × 80% (**where total memory is in bytes**).
+  - It is optimal for the matrix to occupy about **80% of the total system memory**, i.e., `N` × `N` × 8 = total system memory × 80% (**where total memory is in bytes**).
 
   - To check system memory in bytes: `free -b`.
 
@@ -202,8 +202,8 @@ You should adjust the relevant parameters in file `HPL.dat` **according to your 
 
   NBs indicate the size of the matrix chunks in the matrix solving process. The chunk size has a great impact on the performance, and the selection of NB is closely related to many factors of hardware and software.The selection of NB value is mainly based on the optimal value through actual testing, and generally follows the following rules:
 
-  - NB can not be too large or too small, **generally less than 384.**
-  - **NB × 8** must be a multiple of the **cache line**.
+  - `NB` can not be too large or too small, **generally less than 384.**
+  - **`NB` × 8** must be a multiple of the **cache line**.
   - The size of the NB is related to the communication method, matrix size, network, processor speed, etc..
 
   Generally, a few better NB values can be obtained by single node or single CPU testing, but when the system size increases and the problem size becomes larger, the performance obtained from some NB values will decrease. **Therefore, it is recommended to select 3 NB values with good performance in small-scale testing, and then test these choices through large-scale testing.**
@@ -216,8 +216,8 @@ You should adjust the relevant parameters in file `HPL.dat` **according to your 
   1 Qs 
   ```
 
-  P denotes the number of processors in the horizontal direction and Q denotes the number of processors in the vertical direction. P x Q denotes a two-dimensional processor grid. P x Q = number of processes. Generally one process corresponds to one CPU to get the best performance. The values of P and Q generally follow the following pattern:
+  `P` denotes the number of processors in the horizontal direction and `Q` denotes the number of processors in the vertical direction. `P` x `Q` denotes a two-dimensional processor grid. `P` x `Q` = number of processes. Generally one process corresponds to one CPU to get the best performance. The values of `P` and `Q` generally follow the following pattern:
 
-  - **P x Q = Number of Pocesses.**
-  - **P ≤ Q**. In general P takes a smaller value than Q because the amount of columnar communication (the number of communications and the amount of data communicated) is much larger than the horizontal communication.
-  - **P is recommended to be chosen as a power of 2**. Horizontal communication in HPL uses the Binary Exchange method, and the performance is optimal when the number of processors in the horizontal direction is a power of two.
+  - **`P` x `Q` = Number of Pocesses.**
+  - **`P` ≤ `Q`**. In general P takes a smaller value than Q because the amount of columnar communication (the number of communications and the amount of data communicated) is much larger than the horizontal communication.
+  - **`P` is recommended to be chosen as a power of 2**. Horizontal communication in HPL uses the Binary Exchange method, and the performance is optimal when the number of processors in the horizontal direction is a power of two.

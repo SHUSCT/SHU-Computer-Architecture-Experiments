@@ -1,3 +1,5 @@
+#include "Yutils/Random.hpp"
+#include "Yutils/TimeCounter.hpp"
 #include <algorithm>
 #include <execution>
 #include <format>
@@ -6,11 +8,9 @@
 #include <random>
 #include <ranges>
 #include <vector>
-#include "Yutils/TimeCounter.hpp"
-#include "Yutils/Random.hpp"
 
-using yutils::TimeCounter;
 using yutils::RandUniform;
+using yutils::TimeCounter;
 
 /**
  * @brief  Matrix multiplication: A * B = C.
@@ -22,7 +22,7 @@ using yutils::RandUniform;
  * @param m The number of columns in matrix A and the number of rows in matrix B.
  * @param k The number of columns in matrix B and the number of columns in matrix C.
  */
-void ABpC(float* A, float* B, float* C, int n, int m, int k)
+void ompABpC(float* A, float* B, float* C, int n, int m, int k)
 {
     for (int i = 0; i < n; ++i) {
         for (int j = 0; j < k; ++j) {
@@ -54,7 +54,7 @@ int main()
     timeCounter.init();
     timeCounter.startCounting();
     for (int i = 0; i < 10; ++i) {
-        ABpC(A.data(), B.data(), C.data(), n, m, k);
+        ompABpC(A.data(), B.data(), C.data(), n, m, k);
     }
     timeCounter.endCounting();
     std::cout << std::format("Serial: {} ms\n", timeCounter.msecond());
@@ -64,7 +64,7 @@ int main()
     timeCounter.startCounting();
 #pragma omp parallel for num_threads(2)
     for (int i = 0; i < 10; ++i) {
-        ABpC(A.data(), B.data(), C.data(), n, m, k);
+        ompABpC(A.data(), B.data(), C.data(), n, m, k);
     }
     timeCounter.endCounting();
     std::cout << std::format("OMP with 2 threads: {} ms\n", timeCounter.msecond());
@@ -74,7 +74,7 @@ int main()
     timeCounter.startCounting();
 #pragma omp parallel for num_threads(4)
     for (int i = 0; i < 10; ++i) {
-        ABpC(A.data(), B.data(), C.data(), n, m, k);
+        ompABpC(A.data(), B.data(), C.data(), n, m, k);
     }
     timeCounter.endCounting();
     std::cout << std::format("OMP with 4 threads: {} ms\n", timeCounter.msecond());
@@ -84,7 +84,7 @@ int main()
     timeCounter.startCounting();
 #pragma omp parallel for num_threads(8)
     for (int i = 0; i < 10; ++i) {
-        ABpC(A.data(), B.data(), C.data(), n, m, k);
+        ompABpC(A.data(), B.data(), C.data(), n, m, k);
     }
     timeCounter.endCounting();
     std::cout << std::format("OMP with 8 threads: {} ms\n", timeCounter.msecond());
@@ -94,7 +94,7 @@ int main()
     timeCounter.startCounting();
 #pragma omp parallel for num_threads(16)
     for (int i = 0; i < 10; ++i) {
-        ABpC(A.data(), B.data(), C.data(), n, m, k);
+        ompABpC(A.data(), B.data(), C.data(), n, m, k);
     }
     timeCounter.endCounting();
     std::cout << std::format("OMP with 16 threads: {} ms\n", timeCounter.msecond());

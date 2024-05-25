@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.21)
 
 # Project Name
-project(Exp02)
+project(Exp06)
 
 # Set default build type to Release
 if(NOT CMAKE_BUILD_TYPE)
@@ -23,6 +23,10 @@ elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
+    # [Note, Important] 
+    #    Use g++-11 for nvcc compatibility. 
+    #    This must be set before CUDA language is enabled.
+    set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin /usr/bin/g++-11")
 else()
     message(FATAL_ERROR "Unsupported compiler")
 endif()
@@ -37,6 +41,12 @@ elseif (CMAKE_SYSTEM_NAME STREQUAL "Windows")
     link_libraries(${PROJECT_SOURCE_DIR}/../vendor/Yutils/lib/Yutils.lib)
 endif()
 
+# Enable CUDA
+enable_language(CUDA)
+
+# Set CUDA_STANDARD to be 14
+set(CMAKE_CUDA_STANDARD 14)
+
 # Set output directory
 string(
     CONCAT BIN_OUTPUT_PATH
@@ -45,14 +55,9 @@ string(
 )
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_PATH})
 
-# hellomp
-add_executable(hellomp ${PROJECT_SOURCE_DIR}/src/hellomp_main.cpp)
-
-# matmul
-add_executable(matmul ${PROJECT_SOURCE_DIR}/src/matmul_main.cpp)
-
-# computePi
-add_executable(computePi ${PROJECT_SOURCE_DIR}/src/computePi_main.cpp)
-
-# sharedVars
-add_executable(sharedVars ${PROJECT_SOURCE_DIR}/src/sharedVars_main.cpp)
+# Add executable
+add_executable(
+    ABpC
+    ${PROJECT_SOURCE_DIR}/src/ABpC_main.cpp
+    ${PROJECT_SOURCE_DIR}/src/ABpC.cu
+)
