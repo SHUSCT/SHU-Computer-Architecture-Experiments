@@ -14,11 +14,18 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    # Set different compile options for Release and Debug modes
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /openmp")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /openmp")
-    # MSVC compiler-specific options
-    add_compile_options(/permissive- /Zc:forScope)
+    # Release flags
+    string(
+        APPEND CMAKE_CXX_FLAGS_RELEASE 
+        "/permissive- /Zc:forScope /Zc:inline "
+        "/fp:precise /O2 /openmp"
+    )
+    # Debug flags
+    string(
+        APPEND CMAKE_CXX_FLAGS_DEBUG
+        "/permissive- /Zc:forScope /Zc:inline "
+        "/fp:precise /Od /openmp /Zi"
+    )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")

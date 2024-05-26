@@ -12,20 +12,29 @@ endif()
 # Set C++ standard to C++23
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# Set CUDA_STANDARD to be 14
+set(CMAKE_CUDA_STANDARD 14)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    # Set different compile options for Release and Debug modes
-    set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /O2 /openmp")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /Zi /Od /openmp")
-    # MSVC compiler-specific options
-    add_compile_options(/permissive- /Zc:forScope)
+    # Release flags
+    string(
+        APPEND CMAKE_CXX_FLAGS_RELEASE 
+        "/permissive- /Zc:forScope /Zc:inline "
+        "/fp:precise /O2 /openmp"
+    )
+    # Debug flags
+    string(
+        APPEND CMAKE_CXX_FLAGS_DEBUG
+        "/permissive- /Zc:forScope /Zc:inline "
+        "/fp:precise /Od /openmp /Zi"
+    )
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     # Set different compile options for Release and Debug modes
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -fopenmp")
     set(CMAKE_CXX_FLAGS_DEBUG "-g -fopenmp")
-    # [Note, Important] 
-    #    Use g++-11 for nvcc compatibility. 
-    #    This must be set before CUDA language is enabled.
+    # [Note] 
+    # | Use g++-11 for nvcc compatibility. 
+    # | This must be set before CUDA language is enabled.
     set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -ccbin /usr/bin/g++-11")
 else()
     message(FATAL_ERROR "Unsupported compiler")
@@ -44,16 +53,12 @@ endif()
 # Enable CUDA
 enable_language(CUDA)
 
-# Set CUDA_STANDARD to be 14
-set(CMAKE_CUDA_STANDARD 14)
-
 # Set output directory
 string(
-    CONCAT BIN_OUTPUT_PATH
+    CONCAT CMAKE_RUNTIME_OUTPUT_DIRECTORY
     ${PROJECT_SOURCE_DIR}/bin/${CMAKE_BUILD_TYPE}/
     ${CMAKE_SYSTEM_NAME}_${CMAKE_SYSTEM_PROCESSOR}/
 )
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${BIN_OUTPUT_PATH})
 
 # Add executable
 add_executable(
