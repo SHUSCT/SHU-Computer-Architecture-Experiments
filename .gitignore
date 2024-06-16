@@ -17,3 +17,4 @@ _deps
 !.vscode/*.example
 
 **/hostfile
+.DS_Store
