@@ -289,13 +289,21 @@ As its name implies, it lets you “do” something “as su” (short for “su
 
 ## 9. Exercises
 
-1. For this course, you need to be using a Unix shell like Bash or ZSH. If you are on Linux or macOS, you don’t have to do anything special. If you are on Windows, you need to make sure you are not running cmd.exe or PowerShell; you can use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or a Linux virtual machine to use Unix-style command-line tools. To make sure you’re running an appropriate shell, you can try the command `echo $SHELL`. If it says something like `/bin/bash` or `/usr/bin/zsh`, that means you’re running the right program.
-2. Create a new directory called `SHU` under `/tmp`.
-3. Look up the `touch` program. The `man` program is your friend.
-4. Use `touch` to create a new file called `SHUSCT` in `missing`.
-5. Try to execute the file, i.e. type the path to the script (`./SHUSCT`) into your shell and press enter. Understand why it doesn’t work by consulting the output of `ls` (hint: look at the permission bits of the file).
-6. Run the command by explicitly starting the `sh` interpreter, and giving it the file `semester` as the first argument, i.e. `sh SHUSCT`. Why does this work, while `./SHUSCT` didn’t?
-7. Look up the `chmod` program (e.g. use `man chmod`).
-8. Use `chmod` to make it possible to run the command `./SHUSCT` rather than having to type `sh SHUSCT`. How does your shell know that the file is supposed to be interpreted using `sh`? See this page on the [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line for more information.
-9. Use `|` and `>` to write the “last modified” date output by `SHUSCT` into a file called `last-modified.txt` in your home directory.
-10. Write a command that reads out your laptop battery’s power level or your desktop machine’s CPU temperature from `/sys`. Note: if you’re a macOS user, your OS doesn’t have sysfs, so you can skip this exercise.
+> [!NOTE]
+>
+> For this course, you need to be using a Unix shell like Bash or ZSH. If you are on Linux or macOS, you don’t have to do anything special. If you are on Windows, you need to make sure you are not running cmd.exe or PowerShell; you can use [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) or a Linux virtual machine to use Unix-style command-line tools. To make sure you’re running an appropriate shell, you can try the command `echo $SHELL`. If it says something like `/bin/bash` or `/usr/bin/zsh`, that means you’re running the right program.
+
+1. Create a new directory called `SHU` under `/tmp`.
+2. Look up the `touch` program. The `man` program is your friend.
+3. Use `touch` to create a new file called `SHUSCT` in `missing`.
+4. Try to execute the file, i.e. type the path to the script (`./SHUSCT`) into your shell and press enter. Understand why it doesn’t work by consulting the output of `ls` (hint: look at the permission bits of the file).
+5. Run the command by explicitly starting the `sh` interpreter, and giving it the file `semester` as the first argument, i.e. `sh SHUSCT`. Why does this work, while `./SHUSCT` didn’t?
+6. Look up the `chmod` program (e.g. use `man chmod`).
+7. Use `chmod` to make it possible to run the command `./SHUSCT` rather than having to type `sh SHUSCT`. How does your shell know that the file is supposed to be interpreted using `sh`? See this page on the [Shebang](https://en.wikipedia.org/wiki/Shebang_(Unix)) line for more information.
+8. Use `|` and `>` to write the “last modified” date output by `SHUSCT` into a file called `last-modified.txt` in your home directory.
+9. Write a command that reads out your laptop battery’s power level or your desktop machine’s CPU temperature from `/sys`. Note: if you’re a macOS user, your OS doesn’t have sysfs, so you can skip this exercise.
+10. Write a script that allows you to create/delete a folder on three hosts at the same time. The following is the ideal result after running the script:
+
+<img src="./imgs/mkdir.png" alt="mkdir" style="zoom:33%;" />
+
+<img src="./imgs/rmdir.png" alt="rmdir" style="zoom:33%;" />
