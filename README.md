@@ -54,8 +54,8 @@ List of all experiments:
 | ⏩ | Exp04: HPL | [Exp04-Tutor.md](./docs/Exp04-Tutor.md) | Linux |
 | ⏩ | Exp05: CUDA |  | Linux/Windows |
 | ⏩ | Exp06: Profiler |  | Linux |
-| ⏩ | Exp07: Shell | [Exp07-Tutor.md](./docs/Exp07-Tutor.md) | Linux/Mac |
-| ⏩ | Exp08: NFS |  | Linux |
+| ✅ | Exp07: Shell | [Exp07-Tutor.md](./docs/Exp07-Tutor.md) | Linux/Mac |
+| ⏩ | Exp08: NFS | [Exp08-Tutor.md](./docs/Exp08-Tutor.md) | Linux |
 | ⏩ | Exp09: Docker and Singularity | | Linux/Windows |
 | ⏩ | Exp10: Slurm | | Linux |
 
