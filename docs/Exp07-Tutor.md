@@ -275,7 +275,7 @@ You can get more detail about how to take advantage of pipes
 sed -n '3 p' ./test
 ```
 
-Find out yourself on: [Basic Shell Commands in Linux - GeeksforGeeks](https://www.geeksforgeeks.org/basic-shell-commands-in-linux/)、The Unix Shell: Summary of Basic Commands (swcarpentry.github.io)](https://swcarpentry.github.io/shell-novice/reference.html)、
+Find out yourself on: [Basic Shell Commands in Linux - GeeksforGeeks](https://www.geeksforgeeks.org/basic-shell-commands-in-linux/)、The Unix Shell: Summary of Basic Commands (swcarpentry.github.io)](https://swcarpentry.github.io/shell-novice/reference.html)
 
 ## 8. A versatile and powerful tool
 
