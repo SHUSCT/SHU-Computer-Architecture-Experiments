@@ -58,8 +58,6 @@ BLIS_INIT
 
 ### 2.3. MKL-Intel CPU
 
-To do.
-
 #### 2.3.1 Intel oneAPI Base Toolkit
 
 If you have an Intel CPU, you should install **MKL** for BLAS.
@@ -131,13 +129,13 @@ Now you can type `INTEL_INIT` instead of the long command to initialize the envi
  
 - You may wonder why we use `INTEL_INIT` instead of `MKL_INIT`.
  
-- It's becasue the command will initialize all the intel toolkit you've installed, including `MKL`.
+- It's because the command will initialize all the intel toolkit you've installed, including `MKL`.
 
 #### 2.3.2 Intel HPC Toolkit(optional)
 
-Our target is `Intel MPI Library`, which is included by `Intel HPC Toolkit`. It's optional, for you can use `openMPI`'s library and the `openMPI` is essential.
+Our target is `Intel MPI Library`, which is included by `Intel HPC Toolkit`. It's recommended but optional, for you can use `openMPI`'s library and the `openMPI` is essential.
 
-Here is the offical website [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/hpc-toolkit.html). 
+Here is the official website [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/hpc-toolkit.html). 
 
 The installation is similar to `Intel oneAPI Base Toolkit`, just follow the official guide. As you've known, `INTEL_INIT` will initialize all the intel toolkit, including the new installed `Intel HPC Toolkit`
 
@@ -147,7 +145,7 @@ You can simply install OpenBLAS for any CPU.
 
 Download the latest stable source code from the release page [[link](https://github.com/OpenMathLib/OpenBLAS/releases)].
 
-For example, if you have downloaded `OpenBLAS-0.3.27.tar.gz`, extract it and you will get a directory called `OpenBLAS-0.3.27`. Change to it's directory and build the libraray:
+For example, if you have downloaded `OpenBLAS-0.3.27.tar.gz`, extract it and you will get a directory called `OpenBLAS-0.3.27`. Change to it's directory and build the library:
 
 ```bash
 tar -xf ./OpenBLAS-0.3.27.tar.gz
@@ -207,6 +205,20 @@ make arch=Linux64_BLIS
 ```
 
 #### 3.2.2. Configure for Intel CPU (with MKL and OneAPI)
+
+Copy the template file we provide: [Make.Linux64_MKL](../exp04-hpl/Make.Linux64_MKL) into the project directory `hpl-2.3`:
+
+Change following lines in the file to match your system configuration:
+- Line 70, absolute path to hpl project directory (which is named `hpl-2.3`).
+- Line 84, absolute path to your installed Intel MPI (or OpenMPI, but Intel MPI is recommended).
+- Line 95, absolute path to your installed MKL.
+
+Build HPL:
+
+```bash
+make arch=Linux64_MKL
+```
+
 
 To do.
 
