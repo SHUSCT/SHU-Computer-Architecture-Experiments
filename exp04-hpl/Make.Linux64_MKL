@@ -81,9 +81,9 @@ HPLlib       = $(LIBdir)/libhpl.a
 # header files,  MPlib  is defined  to be the name of  the library to be
 # used. The variable MPdir is only used for defining MPinc and MPlib.
 #
-MPdir        = $(HOME)/intel/oneapi/mpi/latest #!check
+MPdir        = $(HOME)/intel/oneapi/mpi/latest # or may be /opt/intel/oneapi/mpi/latest
 MPinc        = -I$(MPdir)/include
-MPlib        = $(MPdir)/lib/libmpicxx.a #!check
+MPlib        = $(MPdir)/lib/libmpi.so
 #
 # ----------------------------------------------------------------------
 # - Linear Algebra library (BLAS or VSIPL) -----------------------------
@@ -92,9 +92,9 @@ MPlib        = $(MPdir)/lib/libmpicxx.a #!check
 # header files,  LAlib  is defined  to be the name of  the library to be
 # used. The variable LAdir is only used for defining LAinc and LAlib.
 #
-LAdir        = $(HOME)/intel/oneapi/mkl/latest #!check
+LAdir        = $(HOME)/intel/oneapi/mkl/latest # or may be /opt/intel/oneapi/mkl/latest
 LAinc        = #$(LAdir)/include
-LAlib        = $(LAdir)/lib/libmkl_intel_lp64.a $(LAdir)/lib/libmkl_intel_thread.a $(LAdir)/lib/libmkl_core.a -liomp5 -lpthread -lm #!check
+LAlib        = $(LAdir)/lib/libmkl_intel_lp64.a $(LAdir)/lib/libmkl_intel_thread.a $(LAdir)/lib/libmkl_core.a -liomp5 -lpthread -lm
 
 #
 # ----------------------------------------------------------------------

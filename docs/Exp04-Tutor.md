@@ -117,7 +117,7 @@ alias INTEL_INIT='source ~/intel/oneapi/setvars.sh'
 alias INTEL_INIT='source /opt/intel/oneapi/setvars.sh'
 ```
 
-**note:**
+**Note**:
 
 - If you choose `~/.bashrc`, it will take effect next time you start a terminal.
  
@@ -125,7 +125,7 @@ alias INTEL_INIT='source /opt/intel/oneapi/setvars.sh'
 
 Now you can type `INTEL_INIT` instead of the long command to initialize the environment.
 
-**note:**
+**Note**:
  
 - You may wonder why we use `INTEL_INIT` instead of `MKL_INIT`.
  
@@ -218,9 +218,6 @@ Build HPL:
 ```bash
 make arch=Linux64_MKL
 ```
-
-
-To do.
 
 #### 3.2.3. Configure for Any CPU (with OpenBLAS and OpenMPI)
 
