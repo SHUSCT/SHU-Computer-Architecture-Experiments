@@ -56,9 +56,90 @@ Now, every time you open a new terminal, you can initialize the environment of B
 BLIS_INIT
 ```
 
-### 2.3. Intel CPU
+### 2.3. MKL-Intel CPU
 
 To do.
+
+#### 2.3.1 Intel oneAPI Base Toolkit
+
+If you have an Intel CPU, you should install **MKL** for BLAS.
+
+It's included by **Intel oneAPI Base Toolkit**. So we'll install the toolkit. Here is the official download [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/base-toolkit-download.html).
+
+Choose the `Offline/Online Installer` for any system. If your **Package Manager**'s package type is supported, you can choose it instead.
+
+The website and installer (if you choose installer) will guide you, just follow them.
+
+After installation, find `setvar.sh`. Usually, you'll find it in `~/intel/oneapi/setvars.sh` or `/opt/intel/oneapi/setvars.sh`. Source it with command:
+
+
+```bash
+# choose one to source
+source ~/intel/oneapi/setvars.sh
+# or if it's in /opt
+source /opt/intel/oneapi/setvars.sh
+```
+
+If you see outputs like:
+
+```bash
+ 
+:: initializing oneAPI environment ...
+   bash: BASH_VERSION = 5.1.16(1)-release
+   args: Using "$@" for setvars.sh arguments: 
+:: advisor -- latest
+:: ccl -- latest
+:: compiler -- latest
+:: dal -- latest
+:: debugger -- latest
+:: dev-utilities -- latest
+:: dnnl -- latest
+:: dpcpp-ct -- latest
+:: dpl -- latest
+:: ipp -- latest
+:: ippcp -- latest
+:: mkl -- latest
+:: mpi -- latest
+:: tbb -- latest
+:: vtune -- latest
+:: oneAPI environment initialized ::
+ 
+```
+
+It means the initialization and the installation are successful.
+
+You must source the `setvar.sh` to initialize the environment before using Intel toolkit. It's troublesome to type such a long command, so let's set alias.
+
+Add the following line to the end of file `/etc/bash.bashrc` or `~/.bashrc`(Any of them is ok. They're both profile for bash)
+
+```bash
+# source intel vars
+alias INTEL_INIT='source ~/intel/oneapi/setvars.sh'
+# or if your intel home is in /opt
+alias INTEL_INIT='source /opt/intel/oneapi/setvars.sh'
+```
+
+**note:**
+
+- If you choose `~/.bashrc`, it will take effect next time you start a terminal.
+ 
+- If you choose `/etc/bash.bashrc`, it will take effect next time you log in.
+
+Now you can type `INTEL_INIT` instead of the long command to initialize the environment.
+
+**note:**
+ 
+- You may wonder why we use `INTEL_INIT` instead of `MKL_INIT`.
+ 
+- It's becasue the command will initialize all the intel toolkit you've installed, including `MKL`.
+
+#### 2.3.2 Intel HPC Toolkit(optional)
+
+Our target is `Intel MPI Library`, which is included by `Intel HPC Toolkit`. It's optional, for you can use `openMPI`'s library and the `openMPI` is essential.
+
+Here is the offical website [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/hpc-toolkit.html). 
+
+The installation is similar to `Intel oneAPI Base Toolkit`, just follow the official guide. As you've known, `INTEL_INIT` will initialize all the intel toolkit, including the new installed `Intel HPC Toolkit`
 
 ### 2.4. OpenBLAS - Whatever CPU
 
@@ -155,7 +236,8 @@ BLIS_INIT
 # AMD CPU <<<<<<
 
 # Intel CPU >>>>>>
-# To do.
+OPENMPI_INIT
+INTEL_INIT
 # Intel CPU <<<<<<
 
 mpirun -np 4 ./xhpl
