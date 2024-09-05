@@ -56,7 +56,7 @@ Now, every time you open a new terminal, you can initialize the environment of B
 BLIS_INIT
 ```
 
-### 2.3. MKL-Intel CPU
+### 2.3. MKL - Intel CPU
 
 #### 2.3.1 Intel oneAPI Base Toolkit
 
@@ -66,15 +66,22 @@ It's included by **Intel oneAPI Base Toolkit**. So we'll install the toolkit. He
 
 Choose the `Offline/Online Installer` for any system. If your **Package Manager**'s package type is supported, you can choose it instead.
 
-The website and installer (if you choose installer) will guide you, just follow them.
+The website will guide you, just follow them. And here are some suggestions:
 
-After installation, find `setvar.sh`. Usually, you'll find it in `~/intel/oneapi/setvars.sh` or `/opt/intel/oneapi/setvars.sh`. Source it with command:
+1. Install with `sudo`. So that it will be installed at `/opt/intel`, where can be shared with all users.
 
+2. If you choose `Offline/Online Installer`, the following command can be used to install without GUI.
 
 ```bash
-# choose one to source
-source ~/intel/oneapi/setvars.sh
-# or if it's in /opt
+sudo sh ./l_BaseKit_p_VERSION_OFFLINE_OR_ONLINE.sh -a --silent --eula accept
+# type "sh ./l_BaseKit_p_VERSION_OFFLINE_OR_ONLINE.sh --help" for more information
+```
+
+After installation, find `setvar.sh`. Usually, you'll find it in `~/intel/oneapi/setvars.sh`(installed without `sudo`) or `/opt/intel/oneapi/setvars.sh`(installed with `sudo`). Since the latter is recommended, we'll chose it as example.
+
+Source it with command:
+
+```bash
 source /opt/intel/oneapi/setvars.sh
 ```
 
@@ -106,15 +113,12 @@ If you see outputs like:
 
 It means the initialization and the installation are successful.
 
-You must source the `setvar.sh` to initialize the environment before using Intel toolkit. It's troublesome to type such a long command, so let's set alias.
+You must source the `setvar.sh` to initialize the environment before using Intel oneAPI toolkit. It's troublesome to type such a long command, so let's set alias.
 
 Add the following line to the end of file `/etc/bash.bashrc` or `~/.bashrc`(Any of them is ok. They're both profile for bash)
 
 ```bash
-# source intel vars
-alias INTEL_INIT='source ~/intel/oneapi/setvars.sh'
-# or if your intel home is in /opt
-alias INTEL_INIT='source /opt/intel/oneapi/setvars.sh'
+alias ONEAPI_INIT='source /opt/intel/oneapi/setvars.sh'
 ```
 
 **Note**:
@@ -123,13 +127,13 @@ alias INTEL_INIT='source /opt/intel/oneapi/setvars.sh'
  
 - If you choose `/etc/bash.bashrc`, it will take effect next time you log in.
 
-Now you can type `INTEL_INIT` instead of the long command to initialize the environment.
+Now you can type `ONEAPI_INIT` instead of the long command to initialize the environment.
 
 **Note**:
  
-- You may wonder why we use `INTEL_INIT` instead of `MKL_INIT`.
+- You may wonder why we use `ONEAPI_INIT` instead of `MKL_INIT`.
  
-- It's because the command will initialize all the intel toolkit you've installed, including `MKL`.
+- It's because the command will initialize all the Intel oneAPI toolkit you've installed, including `MKL`.
 
 #### 2.3.2 Intel HPC Toolkit(optional)
 
@@ -137,7 +141,18 @@ Our target is `Intel MPI Library`, which is included by `Intel HPC Toolkit`. It'
 
 Here is the official website [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/hpc-toolkit.html). 
 
-The installation is similar to `Intel oneAPI Base Toolkit`, just follow the official guide. As you've known, `INTEL_INIT` will initialize all the intel toolkit, including the new installed `Intel HPC Toolkit`
+The installation is similar to `Intel oneAPI Base Toolkit`, and the suggestions are almost the same:
+
+1. Install with `sudo`. So that it will be installed at `/opt/intel`, where is also the "home" of `Intel oneAPI Base Toolkit`.
+
+2. If you choose `Offline/Online Installer`, the following command can be used to install without GUI.
+
+```bash
+sudo sh ./l_HPCKit_p_VERSION_OFFLINE_OR_ONLINE.sh -a --silent --eula accept
+# type "sh ./l_HPCKit_p_VERSION_OFFLINE_OR_ONLINE.sh --help" for more information
+```
+
+You should specify the same destination as previously set when installing `Intel oneAPI Base Toolkit`. This way all packages will be installed inside the same "home directory". As you've known, `ONEAPI_INIT` will initialize all the Intel oneAPI toolkit in the "home directory", including the newly installed `Intel HPC Toolkit`
 
 ### 2.4. OpenBLAS - Whatever CPU
 
@@ -246,7 +261,7 @@ BLIS_INIT
 
 # Intel CPU >>>>>>
 OPENMPI_INIT
-INTEL_INIT
+ONEAPI_INT
 # Intel CPU <<<<<<
 
 mpirun -np 4 ./xhpl
