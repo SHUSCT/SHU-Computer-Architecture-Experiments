@@ -56,9 +56,103 @@ Now, every time you open a new terminal, you can initialize the environment of B
 BLIS_INIT
 ```
 
-### 2.3. Intel CPU
+### 2.3. MKL - Intel CPU
 
-To do.
+#### 2.3.1 Intel oneAPI Base Toolkit
+
+If you have an Intel CPU, you should install **MKL** for BLAS.
+
+It's included by **Intel oneAPI Base Toolkit**. So we'll install the toolkit. Here is the official download [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/base-toolkit-download.html).
+
+Choose the `Offline/Online Installer` for any system. If your **Package Manager**'s package type is supported, you can choose it instead.
+
+The website will guide you, just follow them. And here are some suggestions:
+
+1. Install with `sudo`. So that it will be installed at `/opt/intel`, where can be shared with all users.
+
+2. If you choose `Offline/Online Installer`, the following command can be used to install without GUI.
+
+```bash
+sudo sh ./l_BaseKit_p_VERSION_OFFLINE_OR_ONLINE.sh -a --silent --eula accept
+# type "sh ./l_BaseKit_p_VERSION_OFFLINE_OR_ONLINE.sh --help" for more information
+```
+
+After installation, find `setvar.sh`. Usually, you'll find it in `~/intel/oneapi/setvars.sh`(installed without `sudo`) or `/opt/intel/oneapi/setvars.sh`(installed with `sudo`). Since the latter is recommended, we'll chose it as example.
+
+Source it with command:
+
+```bash
+source /opt/intel/oneapi/setvars.sh
+```
+
+If you see outputs like:
+
+```bash
+ 
+:: initializing oneAPI environment ...
+   bash: BASH_VERSION = 5.1.16(1)-release
+   args: Using "$@" for setvars.sh arguments: 
+:: advisor -- latest
+:: ccl -- latest
+:: compiler -- latest
+:: dal -- latest
+:: debugger -- latest
+:: dev-utilities -- latest
+:: dnnl -- latest
+:: dpcpp-ct -- latest
+:: dpl -- latest
+:: ipp -- latest
+:: ippcp -- latest
+:: mkl -- latest
+:: mpi -- latest
+:: tbb -- latest
+:: vtune -- latest
+:: oneAPI environment initialized ::
+ 
+```
+
+It means the initialization and the installation are successful.
+
+You must source the `setvar.sh` to initialize the environment before using Intel oneAPI toolkit. It's troublesome to type such a long command, so let's set alias.
+
+Add the following line to the end of file `/etc/bash.bashrc` or `~/.bashrc`(Any of them is ok. They're both profile for bash)
+
+```bash
+alias ONEAPI_INIT='source /opt/intel/oneapi/setvars.sh'
+```
+
+**Note**:
+
+- If you choose `~/.bashrc`, it will take effect next time you start a terminal.
+ 
+- If you choose `/etc/bash.bashrc`, it will take effect next time you log in.
+
+Now you can type `ONEAPI_INIT` instead of the long command to initialize the environment.
+
+**Note**:
+ 
+- You may wonder why we use `ONEAPI_INIT` instead of `MKL_INIT`.
+ 
+- It's because the command will initialize all the Intel oneAPI toolkit you've installed, including `MKL`.
+
+#### 2.3.2 Intel HPC Toolkit(optional)
+
+Our target is `Intel MPI Library`, which is included by `Intel HPC Toolkit`. It's recommended but optional, for you can use `openMPI`'s library and the `openMPI` is essential.
+
+Here is the official website [page](https://www.intel.cn/content/www/cn/zh/developer/tools/oneapi/hpc-toolkit.html). 
+
+The installation is similar to `Intel oneAPI Base Toolkit`, and the suggestions are almost the same:
+
+1. Install with `sudo`. So that it will be installed at `/opt/intel`, where is also the "home" of `Intel oneAPI Base Toolkit`.
+
+2. If you choose `Offline/Online Installer`, the following command can be used to install without GUI.
+
+```bash
+sudo sh ./l_HPCKit_p_VERSION_OFFLINE_OR_ONLINE.sh -a --silent --eula accept
+# type "sh ./l_HPCKit_p_VERSION_OFFLINE_OR_ONLINE.sh --help" for more information
+```
+
+You should specify the same destination as previously set when installing `Intel oneAPI Base Toolkit`. This way all packages will be installed inside the same "home directory". As you've known, `ONEAPI_INIT` will initialize all the Intel oneAPI toolkit in the "home directory", including the newly installed `Intel HPC Toolkit`
 
 ### 2.4. OpenBLAS - Whatever CPU
 
@@ -66,7 +160,7 @@ You can simply install OpenBLAS for any CPU.
 
 Download the latest stable source code from the release page [[link](https://github.com/OpenMathLib/OpenBLAS/releases)].
 
-For example, if you have downloaded `OpenBLAS-0.3.27.tar.gz`, extract it and you will get a directory called `OpenBLAS-0.3.27`. Change to it's directory and build the libraray:
+For example, if you have downloaded `OpenBLAS-0.3.27.tar.gz`, extract it and you will get a directory called `OpenBLAS-0.3.27`. Change to it's directory and build the library:
 
 ```bash
 tar -xf ./OpenBLAS-0.3.27.tar.gz
@@ -127,7 +221,18 @@ make arch=Linux64_BLIS
 
 #### 3.2.2. Configure for Intel CPU (with MKL and OneAPI)
 
-To do.
+Copy the template file we provide: [Make.Linux64_MKL](../exp04-hpl/Make.Linux64_MKL) into the project directory `hpl-2.3`:
+
+Change following lines in the file to match your system configuration:
+- Line 70, absolute path to hpl project directory (which is named `hpl-2.3`).
+- Line 84, absolute path to your installed Intel MPI (or OpenMPI, but Intel MPI is recommended).
+- Line 95, absolute path to your installed MKL.
+
+Build HPL:
+
+```bash
+make arch=Linux64_MKL
+```
 
 #### 3.2.3. Configure for Any CPU (with OpenBLAS and OpenMPI)
 
@@ -155,7 +260,8 @@ BLIS_INIT
 # AMD CPU <<<<<<
 
 # Intel CPU >>>>>>
-# To do.
+OPENMPI_INIT
+ONEAPI_INT
 # Intel CPU <<<<<<
 
 mpirun -np 4 ./xhpl
